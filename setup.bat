@@ -2,19 +2,20 @@ setlocal
 for /f "usebackq tokens=1,2,*" %%B IN (`reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" /v Desktop`) do set DESKTOP=%%D
 start /d "%~dp0nircmd" nircmd.exe shortcut "%~dp0run.bat" "%DESKTOP%" "Scuver"
 
-start "" %~dp0PortableGit\bin\git.exe init
-start "" %~dp0PortableGit\bin\git.exe remote add origin "https://github.com/scuver/scuver-rest"
-start "" %~dp0PortableGit\bin\git.exe pull
+start /WAIT "" %~dp0PortableGit\bin\git.exe init
+start /WAIT "" %~dp0PortableGit\bin\git.exe remote add origin "https://github.com/scuver/scuver-rest"
+start /WAIT "" %~dp0PortableGit\bin\git.exe pull
 
-start "" %~dp0node\npm.exe i -g forever
+start /WAIT "" %~dp0node\npm i -g forever
+start /WAIT "" %~dp0node\npm i -g forever-win
 
 set /p "id=SHOP UID: "
 echo %id% > shop
 
-set /p "uber=Ativar Integração Uber Eats? (s/n): "
+set /p "uber=Ativar Integracao Uber Eats? (s/n): "
 echo %uber% > uber
 
-set /p "glovo=Ativar Integração Glovo? (s/n): "
+set /p "glovo=Ativar Integracao Glovo? (s/n): "
 echo %glovo% > glovo
 
 

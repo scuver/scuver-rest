@@ -16,7 +16,7 @@ app.options('/*', function (req, res) {
 });
 
 app.post('/printPdf', express.raw({ type: 'application/pdf' }), (req, res) => {
-  return cors(req, res, async () => {
+  return cors(req, res, () => {
     console.log('Print new pdf', req.body);
     return printPdf(req.query.printer || 'Scuver Printer', req.body).then(() => res.send('OK')).catch(e => {
       console.log('e', e);
@@ -29,16 +29,15 @@ app.listen(port, () => {
   console.log(`Print API listening on port ${port}`)
 })
 
-const printPdf = async (printer, pdf) => {
+const printPdf = (printer, pdf) => {
   const options = {};
   if (printer) {
     options.printer = printer;
   }
   const tmpFilePath = path.join(`/tmp/${Math.random().toString(36).substr(7)}.pdf`);
   fs.writeFileSync(tmpFilePath, pdf, 'binary');
-  await ptp.print(tmpFilePath, options);
+  ptp.print(tmpFilePath, options).then(() => fs.unlinkSync(tmpFilePath)).catch(() => fs.unlinkSync(tmpFilePath));
   // await ptp.print('/tmp/pd.pdf', {});
-  fs.unlinkSync(tmpFilePath);
 
   return true;
 }
