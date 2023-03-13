@@ -8,6 +8,14 @@ start "" %~dp0PortableGit\bin\git.exe pull
 
 set /p "id=SHOP UID: "
 echo %id% > shop
+
+set /p "uber=Ativar Integração Uber Eats? (s/n): "
+echo %id% > uber
+
+set /p "glovo=Ativar Integração Glovo? (s/n): "
+echo %id% > glovo
+
+
 :: exit 0
 
 :: bitsadmin.exe /transfer "DownloadGit" https://github.com/git-for-windows/git/releases/download/v2.39.2.windows.1/PortableGit-2.39.2-32-bit.7z.exe "%~dp0gitSetup.exe"
