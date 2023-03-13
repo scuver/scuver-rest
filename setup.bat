@@ -6,14 +6,16 @@ start "" %~dp0PortableGit\bin\git.exe init
 start "" %~dp0PortableGit\bin\git.exe remote add origin "https://github.com/scuver/scuver-rest"
 start "" %~dp0PortableGit\bin\git.exe pull
 
+start "" %~dp0node\npm.exe i -g forever
+
 set /p "id=SHOP UID: "
 echo %id% > shop
 
 set /p "uber=Ativar Integração Uber Eats? (s/n): "
-echo %id% > uber
+echo %uber% > uber
 
 set /p "glovo=Ativar Integração Glovo? (s/n): "
-echo %id% > glovo
+echo %glovo% > glovo
 
 
 :: exit 0
