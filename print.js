@@ -34,7 +34,7 @@ const printPdf = (printer, pdf) => {
   if (printer) {
     options.printer = printer;
   }
-  const tmpFilePath = path.join(`/tmp/${Math.random().toString(36).substr(7)}.pdf`);
+  const tmpFilePath = path.join(`${Math.random().toString(36).substr(7)}.pdf`);
   fs.writeFileSync(tmpFilePath, pdf, 'binary');
   ptp.print(tmpFilePath, options).then(() => fs.unlinkSync(tmpFilePath)).catch(() => fs.unlinkSync(tmpFilePath));
   // await ptp.print('/tmp/pd.pdf', {});
