@@ -6,17 +6,17 @@ start /WAIT "" %~dp0PortableGit\bin\git.exe init
 start /WAIT "" %~dp0PortableGit\bin\git.exe remote add origin "https://github.com/scuver/scuver-rest"
 start /WAIT "" %~dp0PortableGit\bin\git.exe pull
 
-start /WAIT "" %~dp0node\npm i -g forever
-start /WAIT "" %~dp0node\npm i -g forever-win
+start /WAIT "" %~dp0node\npm i -g forever --force
+start /WAIT "" %~dp0node\npm i -g forever-win --force
 
 set /p "id=SHOP UID: "
 echo %id% > shop
 
-set /p "uber=Ativar Integracao Uber Eats? (s/n): "
-echo %uber% > uber
+:: set /p "uber=Ativar Integracao Uber Eats? (s/n): "
+:: echo %uber% > uber
 
-set /p "glovo=Ativar Integracao Glovo? (s/n): "
-echo %glovo% > glovo
+:: set /p "glovo=Ativar Integracao Glovo? (s/n): "
+:: echo %glovo% > glovo
 
 
 :: exit 0

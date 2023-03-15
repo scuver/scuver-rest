@@ -9,8 +9,8 @@ taskkill /f /im node
 start "" %~dp0node\npm i
 set /p shop=< %~dp0shop
 echo %shop%
-set /p uber=< %~dp0uber
-set /p glovo=< %~dp0glovo
+:: set /p uber=< %~dp0uber
+:: set /p glovo=< %~dp0glovo
 
 start "" %~dp0node\forever notify.js --shop=%shop%
 start "" %~dp0node\forever print.js
