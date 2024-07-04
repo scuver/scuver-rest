@@ -18,7 +18,7 @@ app.options('/*', function (req, res) {
 app.post('/printPdf', express.raw({ type: 'application/pdf' }), (req, res) => {
   return cors(req, res, () => {
     console.log('Print new pdf', req.body);
-    return printPdf(req.query.printer || 'Scuver Printer', req.body).then(() => res.send('OK')).catch(e => {
+    return printPdf(req.query.printer || 'TasticPrinter', req.body).then(() => res.send('OK')).catch(e => {
       console.log('e', e);
       res.status(400).send(e);
     });
