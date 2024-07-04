@@ -6,8 +6,14 @@ const cors = require('cors')({origin: '*'});
 
 const app = express()
 const port = 3222
-app.use(express.json());
-app.use(express.bodyParser({limit: '200mb'}));
+app.use(express.json({
+  extended: true,
+  limit: '50mb'
+}));
+app.use( express.urlencoded( {
+  extended: true,
+  limit: '50mb'
+} ) )
 
 app.options('/*', function (req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -16,7 +22,7 @@ app.options('/*', function (req, res) {
   res.end();
 });
 
-app.post('/printPdf', express.raw({ type: 'application/pdf' }), (req, res) => {
+app.post('/printPdf', express.raw({ type: 'application/pdf', limit: '200mb' }), (req, res) => {
   return cors(req, res, () => {
     console.log('Print new pdf', req.body);
     return printPdf(req.query.printer || 'TasticPrinter', req.body).then(() => res.send('OK')).catch(e => {
