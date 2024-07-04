@@ -7,6 +7,7 @@ const cors = require('cors')({origin: '*'});
 const app = express()
 const port = 3222
 app.use(express.json());
+app.use(express.bodyParser({limit: '200mb'}));
 
 app.options('/*', function (req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
