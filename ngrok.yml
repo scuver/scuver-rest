@@ -7,4 +7,3 @@ tunnels:
   assimssh:
     proto: tcp
     addr: 22
-    bind_tls: true
