@@ -10,6 +10,7 @@ let playSoundInterval = null;
 let audio;
 
 const startPlaying = () => {
+  console.log('Start playing...')
   stopPlaying();
   playSoundInterval = setInterval(() => {
       audio = player.play('bells.wav')
@@ -17,6 +18,7 @@ const startPlaying = () => {
 }
 
 const stopPlaying = () => {
+  console.log('Stop playing...')
   if (playSoundInterval) {
     clearInterval(playSoundInterval);
     playSoundInterval = null;
@@ -28,6 +30,7 @@ const stopPlaying = () => {
 }
 
 const update = () => {
+  console.log('Updating...')
   axios({
     method: 'GET',
     url: `${SERVER_URL}/get/orders-underway`,
