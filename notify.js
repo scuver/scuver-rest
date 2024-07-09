@@ -12,7 +12,7 @@ let audio;
 const startPlaying = () => {
   stopPlaying();
   playSoundInterval = setInterval(() => {
-      audio = player.play('whoosh.mp3')
+      audio = player.play('bells.wav')
   }, 2500);
 }
 

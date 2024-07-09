@@ -53,11 +53,13 @@ sudo udevadm trigger
 sudo usermod -aG plugdev $USER
 
 sudo nano /etc/rc.local
-#!/bin/bash
 /usr/local/bin/start_ssh_tunnel.sh &
-exit 0
 sudo chmod +x /etc/rc.local
-
+sudo cp /home/ggomes/.ssh/known_hosts /root/.ssh/known_hosts
+sudo chown root:root /root/.ssh/known_hosts
+sudo chmod 644 /root/.ssh/known_hosts
+sudo chown root:root /root/.ssh
+sudo chmod 700 /root/.ssh
 
 sudo nano /usr/local/bin/start_ssh_tunnel.sh
 #!/bin/bash
@@ -68,6 +70,17 @@ ssh ggomes@oh-168-119-202-164.client.oakhost-customer.net
 
 ssh ggomes@oh-168-119-202-164.client.oakhost-customer.net
 ssh ggomes@localhost -p 2222
+
+
+sudo systemctl start bluetooth
+sudo systemctl enable bluetooth
+bluetoothctl
+power on
+discoverable on
+scan on
+pair [MAC address]
+connect [MAC address]
+trust [MAC address]
 
 bash run.sh
 
