@@ -1,9 +1,0 @@
-version: 2
-authtoken: 5cHbDvKFUqGFTHDS2gkvJ_3pDDtP59kqiJEooEYNpSR
-tunnels:
-  assimhttp:
-    proto: http
-    addr: 8080
-  assimssh:
-    proto: tcp
-    addr: 22

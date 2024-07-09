@@ -12,7 +12,7 @@ let audio;
 const startPlaying = () => {
   stopPlaying();
   playSoundInterval = setInterval(() => {
-      audio = player.play('bells.wav')
+      audio = player.play('whoosh.mp3')
   }, 2500);
 }
 
@@ -43,7 +43,7 @@ const update = () => {
     }
     stopPlaying();
     for (const order of data) {
-      if (order.uidShop && order.uidShop === SHOP_UID && order.status === 'pending') {
+      if (order.uidShop && order.uidShop === SHOP_UID && order.status === 'ready') {
         console.log('Playing');
         startPlaying();
         break;

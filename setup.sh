@@ -1,15 +1,19 @@
 # ligar ao rasp por ethernet
 arp -a
 # ver qual o que aparece ou desaparece conforme rasp ligado ou desligado
-ssh pi@192.168.3.2
-sudo apt-get install cups
-sudo usermod -a -G lpadmin pi
+ssh ggomes@192.168.1.195
+
+sudo apt-get update
+sudo apt-get install cups autossh sshpass git -y
+
+sudo usermod -a -G lpadmin ggomes
 sudo nano /etc/cups/cupsd.conf
 
 # Only listen for connections from the local machine.
 # COMENTAR - Listen localhost:631
-#Port 631
-#Listen /var/run/cups/cups.sock
+# ADICIONAR - Port 631
+# MANTER - Listen /var/run/cups/cups.sock
+# ADICIONAR OS ALLOW ABAIXO
 #<Location />
 #  Order allow,deny
 #  Allow all
@@ -28,62 +32,44 @@ sudo nano /etc/cups/cupsd.conf
 #</Location>
 
 sudo systemctl restart cups
-# http://192.168.3.2:631
+# http://192.168.1.195:631
 
-# Unknow Raw Raw
+# Unknow -> Raw -> Raw
 
 git clone https://github.com/scuver/scuver-rest.git
 
 curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
-nvm use 14
+source /home/ggomes/.bashrc
+nvm install 14
+cd scuver-rest || exit 0
 npm i
+npm i -g forever
 
-
-
-#!/bin/bash
-
-echo "Initial block devices:"
-lsblk
-
-echo "Plug in your USB device and press Enter."
-read -p ""
-
-echo "Updated block devices:"
-lsblk
-
-echo "Recent dmesg entries for USB devices:"
-dmesg | grep -i usb
-
-echo "List of USB devices:"
 lsusb
+sudo nano /etc/udev/rules.d/99-usb-printer.rules
+# SUBSYSTEM=="usb", ATTR{idVendor}=="0fe6", ATTR{idProduct}=="811e", MODE="0666", GROUP="lp", SYMLINK+="usbprinter"
+sudo udevadm control --reload-rules
+sudo udevadm trigger
+sudo usermod -aG plugdev $USER
 
+sudo nano /etc/rc.local
 #!/bin/bash
-
-echo "Listing /dev before plugging in the printer:"
-ls /dev > /tmp/dev_before
-
-echo "Plug in your USB printer and press Enter."
-read -p ""
-
-echo "Listing /dev after plugging in the printer:"
-ls /dev > /tmp/dev_after
-
-echo "Differences in /dev:"
-diff /tmp/dev_before /tmp/dev_after
+/usr/local/bin/start_ssh_tunnel.sh &
+exit 0
+sudo chmod +x /etc/rc.local
 
 
-   46  lsusb
-   47  sudo nano /etc/udev/rules.d/99-usb-printer.rules
-   48  sudo udevadm control --reload-rules
-   49  sudo udevadm trigger
-   50  sudo usermod -aG plugdev $USER
+sudo nano /usr/local/bin/start_ssh_tunnel.sh
+#!/bin/bash
+sshpass -p 'password_para_oak' autossh -M 0 -N -R 2222:localhost:22 ggomes@oh-168-119-202-164.client.oakhost-customer.net &
+sudo chmod +x /usr/local/bin/start_ssh_tunnel.sh
+ssh ggomes@oh-168-119-202-164.client.oakhost-customer.net
+/usr/local/bin/start_ssh_tunnel.sh
 
+ssh ggomes@oh-168-119-202-164.client.oakhost-customer.net
+ssh ggomes@localhost -p 2222
 
-curl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null && echo "deb https://ngrok-agent.s3.amazonaws.com buster main" | sudo tee /etc/apt/sources.list.d/ngrok.list && sudo apt update && sudo apt install ngrok
-
-cp ngrok.yml ~/.config/ngrok/ngrok.yml
-
-ngrok start assimssh
+bash run.sh
 
     1  sudo nano /etc/cups/cupsd.conf
     2  sudo systemctl restart cups
