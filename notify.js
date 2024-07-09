@@ -74,7 +74,7 @@ const update = () => {
     update();
   });
 
-  stopPlaying();
+  // stopPlaying();
 
   update();
 })();

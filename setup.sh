@@ -71,16 +71,16 @@ ssh ggomes@oh-168-119-202-164.client.oakhost-customer.net
 ssh ggomes@oh-168-119-202-164.client.oakhost-customer.net
 ssh ggomes@localhost -p 2222
 
-
 sudo systemctl start bluetooth
 sudo systemctl enable bluetooth
+service bluetooth status
 bluetoothctl
 power on
-discoverable on
+agent on
 scan on
-pair [MAC address]
-connect [MAC address]
-trust [MAC address]
+trust 40:EF:4C:9A:5D:DF
+pair 40:EF:4C:9A:5D:DF
+connect 40:EF:4C:9A:5D:DF
 
 bash run.sh
 
