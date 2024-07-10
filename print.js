@@ -89,9 +89,9 @@ httpsServer.listen(3222, () => {
 //   res.end();
 // }).listen(8088);
 
-app.listen(port, () => {
-  console.log(`Print API listening on port ${port}`)
-})
+// app.listen(port, () => {
+//   console.log(`Print API listening on port ${port}`)
+// })
 
 // app.post('/printPdf', express.raw({ type: 'application/pdf', limit: '200mb' }), (req, res) => {
 //   return cors(req, res, () => {
