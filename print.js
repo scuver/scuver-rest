@@ -83,11 +83,11 @@ httpsServer.listen(3222, () => {
   console.log('Server is running on https://localhost');
 });
 
-const http = require('http');
-http.createServer((req, res) => {
-  res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
-  res.end();
-}).listen(80);
+// const http = require('http');
+// http.createServer((req, res) => {
+//   res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
+//   res.end();
+// }).listen(8088);
 
 app.listen(port, () => {
   console.log(`Print API listening on port ${port}`)
