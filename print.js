@@ -79,7 +79,7 @@ async function printEscpos(escpos, qrcode) {
 }
 
 const httpsServer = https.createServer(options, app);
-httpsServer.listen(443, () => {
+httpsServer.listen(3222, () => {
   console.log('Server is running on https://localhost');
 });
 
