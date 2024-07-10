@@ -1,7 +1,7 @@
 const express = require("express");
 // const ptp = require("pdf-to-printer");
 // const fs = require("fs");
-// const path = require("path");
+const path = require("path");
 const cors = require('cors')({origin: '*'});
 const fs = require('fs');
 const https = require('https');
