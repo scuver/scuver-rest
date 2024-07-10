@@ -48,6 +48,7 @@ npm i -g forever
 lsusb
 sudo nano /etc/udev/rules.d/99-usb-printer.rules
 # SUBSYSTEM=="usb", ATTR{idVendor}=="0fe6", ATTR{idProduct}=="811e", MODE="0666", GROUP="lp", SYMLINK+="usbprinter"
+# SUBSYSTEM=="usb", ATTR{idVendor}=="1fc9", ATTR{idProduct}=="2016", MODE="0666", GROUP="lp", SYMLINK+="usbprinter"
 sudo udevadm control --reload-rules
 sudo udevadm trigger
 sudo usermod -aG plugdev $USER
@@ -76,13 +77,12 @@ sudo systemctl enable bluetooth
 service bluetooth status
 bluetoothctl
 power on
-agent on
 scan on
 trust 40:EF:4C:9A:5D:DF
 pair 40:EF:4C:9A:5D:DF
 connect 40:EF:4C:9A:5D:DF
 
-bash run.sh
+bash run.sh s4qRI8ezYhR947BJ39sF
 
     1  sudo nano /etc/cups/cupsd.conf
     2  sudo systemctl restart cups

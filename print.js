@@ -3,6 +3,9 @@ const express = require("express");
 // const fs = require("fs");
 // const path = require("path");
 const cors = require('cors')({origin: '*'});
+const fs = require('fs');
+const https = require('https');
+
 // const { ThermalPrinter, PrinterTypes, CharacterSet, BreakLine } = require('node-thermal-printer');
 //
 // const escpos = require('escpos');
@@ -15,6 +18,12 @@ const cors = require('cors')({origin: '*'});
 const { Printer, Image } = require("@node-escpos/core");
 const USB = require("@node-escpos/usb-adapter");
 const device = new USB();
+
+const options = {
+  key: fs.readFileSync(path.join(__dirname, 'server.key')),
+  cert: fs.readFileSync(path.join(__dirname, 'server.cert')),
+};
+
 
 const app = express()
 const port = 3222
@@ -68,6 +77,17 @@ async function printEscpos(escpos, qrcode) {
   //   return printer.cut().close();
   // });
 }
+
+const httpsServer = https.createServer(options, app);
+httpsServer.listen(443, () => {
+  console.log('Server is running on https://localhost');
+});
+
+const http = require('http');
+http.createServer((req, res) => {
+  res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
+  res.end();
+}).listen(80);
 
 app.listen(port, () => {
   console.log(`Print API listening on port ${port}`)
