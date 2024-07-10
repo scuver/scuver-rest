@@ -1,10 +1,43 @@
 # ligar ao rasp por ethernet
 arp -a
 # ver qual o que aparece ou desaparece conforme rasp ligado ou desligado
-ssh ggomes@192.168.1.195
+ssh ggomes@192.168.1.194
+
+sudo raspi-config
+#Navigate to Network Options
+#
+#Use the arrow keys to navigate.
+#Select Network Options.
+#Press Enter.
+#Select Wi-Fi
+#
+#Select Wi-Fi.
+#Press Enter.
+#Enter SSID
+#
+#Enter the SSID (name) of your Wi-Fi network.
+#Press Enter.
+#Enter Password
+#
+#Enter the password for your Wi-Fi network.
+#Press Enter.
+#Exit raspi-config
+#
+#Navigate to Finish.
+#Press Enter.
 
 sudo apt-get update
-sudo apt-get install cups autossh sshpass git -y
+sudo apt-get install cups autossh sshpass git dnsmasq snapd -y
+
+sudo nano /etc/dnsmasq.conf
+# address=/tastic.net/192.168.1.68
+sudo systemctl restart dnsmasq
+openssl req -nodes -new -x509 -keyout server.key -out server.cert
+sudo snap install core; sudo snap refresh core
+sudo snap install --classic certbot
+sudo ln -s /snap/bin/certbot /usr/bin/certbot
+sudo certbot certonly --manual --preferred-challenges dns -d print.tastic.pt
+
 
 sudo usermod -a -G lpadmin ggomes
 sudo nano /etc/cups/cupsd.conf
@@ -82,7 +115,11 @@ trust 40:EF:4C:9A:5D:DF
 pair 40:EF:4C:9A:5D:DF
 connect 40:EF:4C:9A:5D:DF
 
-bash run.sh s4qRI8ezYhR947BJ39sF
+# bash run.sh s4qRI8ezYhR947BJ39sF
+# bash run.sh rYhGRvkYLA2HHyrhuMMd
+
+forever stopall
+forever print.js &
 
     1  sudo nano /etc/cups/cupsd.conf
     2  sudo systemctl restart cups

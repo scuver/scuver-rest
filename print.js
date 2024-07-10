@@ -20,8 +20,8 @@ const USB = require("@node-escpos/usb-adapter");
 const device = new USB();
 
 const options = {
-  key: fs.readFileSync(path.join(__dirname, 'server.key')),
-  cert: fs.readFileSync(path.join(__dirname, 'server.cert')),
+  key: fs.readFileSync('/etc/letsencrypt/live/print.tastic.pt/privkey.pem'),
+  cert: fs.readFileSync('/etc/letsencrypt/live/print.tastic.pt/fullchain.pem'),
 };
 
 
@@ -77,6 +77,9 @@ async function printEscpos(escpos, qrcode) {
   //   return printer.cut().close();
   // });
 }
+
+app.use('/.well-known/acme-challenge', express.static(path.join(__dirname, 'webroot/.well-known/acme-challenge')));
+
 
 const httpsServer = https.createServer(options, app);
 httpsServer.listen(3222, () => {
