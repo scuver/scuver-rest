@@ -26,18 +26,10 @@ sudo raspi-config
 #Navigate to Finish.
 #Press Enter.
 
+
+
 sudo apt-get update
-sudo apt-get install cups autossh sshpass git dnsmasq snapd -y
-
-sudo nano /etc/dnsmasq.conf
-# address=/tastic.net/192.168.1.68
-sudo systemctl restart dnsmasq
-openssl req -nodes -new -x509 -keyout server.key -out server.cert
-sudo snap install core; sudo snap refresh core
-sudo snap install --classic certbot
-sudo ln -s /snap/bin/certbot /usr/bin/certbot
-sudo certbot certonly --manual --preferred-challenges dns -d print.tastic.pt
-
+sudo apt-get install cups autossh sshpass git  -y
 
 sudo usermod -a -G lpadmin ggomes
 sudo nano /etc/cups/cupsd.conf
