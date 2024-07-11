@@ -27,6 +27,7 @@ app.use( express.urlencoded( {
   extended: true,
   limit: '50mb'
 } ) )
+app.use(cors());
 
 app.options('/*', function (req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
