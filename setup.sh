@@ -26,10 +26,9 @@ sudo raspi-config
 #Navigate to Finish.
 #Press Enter.
 
-
-
 sudo apt-get update
 sudo apt-get install cups autossh sshpass git  -y
+npm install -g localtunnel
 
 sudo usermod -a -G lpadmin ggomes
 sudo nano /etc/cups/cupsd.conf
@@ -97,15 +96,15 @@ ssh ggomes@oh-168-119-202-164.client.oakhost-customer.net
 ssh ggomes@oh-168-119-202-164.client.oakhost-customer.net
 ssh ggomes@localhost -p 2222
 
-sudo systemctl start bluetooth
-sudo systemctl enable bluetooth
-service bluetooth status
-bluetoothctl
-power on
-scan on
-trust 40:EF:4C:9A:5D:DF
-pair 40:EF:4C:9A:5D:DF
-connect 40:EF:4C:9A:5D:DF
+#sudo systemctl start bluetooth
+#sudo systemctl enable bluetooth
+#service bluetooth status
+#bluetoothctl
+#power on
+#scan on
+#trust 40:EF:4C:9A:5D:DF
+#pair 40:EF:4C:9A:5D:DF
+#connect 40:EF:4C:9A:5D:DF
 
 # bash run.sh s4qRI8ezYhR947BJ39sF
 # bash run.sh rYhGRvkYLA2HHyrhuMMd
