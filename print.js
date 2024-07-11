@@ -1,10 +1,8 @@
 const express = require("express");
 // const ptp = require("pdf-to-printer");
 // const fs = require("fs");
-const path = require("path");
+// const path = require("path");
 const cors = require('cors')({origin: '*'});
-const fs = require('fs');
-const https = require('https');
 
 // const { ThermalPrinter, PrinterTypes, CharacterSet, BreakLine } = require('node-thermal-printer');
 //
@@ -18,12 +16,6 @@ const https = require('https');
 const { Printer, Image } = require("@node-escpos/core");
 const USB = require("@node-escpos/usb-adapter");
 const device = new USB();
-
-const options = {
-  key: fs.readFileSync('/etc/letsencrypt/live/print.tastic.pt/privkey.pem'),
-  cert: fs.readFileSync('/etc/letsencrypt/live/print.tastic.pt/fullchain.pem'),
-};
-
 
 const app = express()
 const port = 3222
@@ -78,23 +70,9 @@ async function printEscpos(escpos, qrcode) {
   // });
 }
 
-app.use('/.well-known/acme-challenge', express.static(path.join(__dirname, 'webroot/.well-known/acme-challenge')));
-
-
-const httpsServer = https.createServer(options, app);
-httpsServer.listen(3222, () => {
-  console.log('Server is running on https://localhost');
-});
-
-// const http = require('http');
-// http.createServer((req, res) => {
-//   res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
-//   res.end();
-// }).listen(8088);
-
-// app.listen(port, () => {
-//   console.log(`Print API listening on port ${port}`)
-// })
+app.listen(port, () => {
+  console.log(`Print API listening on port ${port}`)
+})
 
 // app.post('/printPdf', express.raw({ type: 'application/pdf', limit: '200mb' }), (req, res) => {
 //   return cors(req, res, () => {
