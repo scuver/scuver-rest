@@ -57,6 +57,7 @@ async function printEscpos(escpos, qrcode) {
     if (qrcode) {
       await printer.qrcode(qrcode);
     }
+    await printer.raw(qrcode);
     await printer.raw(result);
     await printer.close();
   });

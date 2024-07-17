@@ -1,34 +1,17 @@
 # ligar ao rasp por ethernet
 arp -a
 # ver qual o que aparece ou desaparece conforme rasp ligado ou desligado
-ssh ggomes@192.168.1.194
-
+ssh ggomes@192.168.1.196
+# ou
 sudo raspi-config
-#Navigate to Network Options
-#
-#Use the arrow keys to navigate.
-#Select Network Options.
-#Press Enter.
-#Select Wi-Fi
-#
-#Select Wi-Fi.
-#Press Enter.
-#Enter SSID
-#
-#Enter the SSID (name) of your Wi-Fi network.
-#Press Enter.
-#Enter Password
-#
-#Enter the password for your Wi-Fi network.
-#Press Enter.
-#Exit raspi-config
-#
-#Navigate to Finish.
-#Press Enter.
 
 sudo apt-get update
 sudo apt-get install cups autossh sshpass git  -y
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+source /home/ggomes/.bashrc
+nvm install 14
 npm install -g localtunnel
+npm install -g pm2
 
 sudo usermod -a -G lpadmin ggomes
 sudo nano /etc/cups/cupsd.conf
@@ -56,45 +39,53 @@ sudo nano /etc/cups/cupsd.conf
 #</Location>
 
 sudo systemctl restart cups
-# http://192.168.1.195:631
+# http://192.168.1.196:631
 
 # Unknow -> Raw -> Raw
 
 git clone https://github.com/scuver/scuver-rest.git
 
-curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
-source /home/ggomes/.bashrc
-nvm install 14
 cd scuver-rest || exit 0
 npm i
-npm i -g forever
 
 lsusb
 sudo nano /etc/udev/rules.d/99-usb-printer.rules
 # SUBSYSTEM=="usb", ATTR{idVendor}=="0fe6", ATTR{idProduct}=="811e", MODE="0666", GROUP="lp", SYMLINK+="usbprinter"
 # SUBSYSTEM=="usb", ATTR{idVendor}=="1fc9", ATTR{idProduct}=="2016", MODE="0666", GROUP="lp", SYMLINK+="usbprinter"
+# SUBSYSTEM=="usb", ATTR{idVendor}=="067b", ATTR{idProduct}=="2305", MODE="0666", GROUP="lp", SYMLINK+="usbprinter"
 sudo udevadm control --reload-rules
 sudo udevadm trigger
 sudo usermod -aG plugdev $USER
 
 sudo nano /etc/rc.local
-/usr/local/bin/start_ssh_tunnel.sh &
+/usr/local/bin/start_tastic.sh &
 sudo chmod +x /etc/rc.local
-sudo cp /home/ggomes/.ssh/known_hosts /root/.ssh/known_hosts
-sudo chown root:root /root/.ssh/known_hosts
-sudo chmod 644 /root/.ssh/known_hosts
-sudo chown root:root /root/.ssh
-sudo chmod 700 /root/.ssh
+ssh ggomes@oh-168-119-202-164.client.oakhost-customer.net
 
-sudo nano /usr/local/bin/start_ssh_tunnel.sh
+#sudo cp /home/ggomes/.ssh/known_hosts /root/.ssh/known_hosts
+#sudo chown root:root /root/.ssh/known_hosts
+#sudo chmod 644 /root/.ssh/known_hosts
+#sudo chown root:root /root/.ssh
+#sudo chmod 700 /root/.ssh
+
+sudo nano /usr/local/bin/start_tastic.sh
 #!/bin/bash
-sshpass -p 'password_para_oak' autossh -M 0 -N -R 2222:localhost:22 ggomes@oh-168-119-202-164.client.oakhost-customer.net &
-sudo chmod +x /usr/local/bin/start_ssh_tunnel.sh
-ssh ggomes@oh-168-119-202-164.client.oakhost-customer.net
-/usr/local/bin/start_ssh_tunnel.sh
+# 2222 - assim
+# 2223 - varunca
+# NAO ESQUECER DE MUDAR A PASSWORD
+su ggomes
+sshpass -p 'password_para_oak' autossh -M 0 -N -R 2223:localhost:22 ggomes@oh-168-119-202-164.client.oakhost-customer.net &
+# tastic-print - assim
+lt --port 3222 --subdomain varunca-print &
+pm2 start print.js &
+
+sudo chmod +x /usr/local/bin/start_tastic.sh
+/usr/local/bin/start_tastic.sh
 
 ssh ggomes@oh-168-119-202-164.client.oakhost-customer.net
-ssh ggomes@localhost -p 2222
+# 2222 - assim
+# 2223 - varunca
+ssh ggomes@localhost -p 2223
 
 #sudo systemctl start bluetooth
 #sudo systemctl enable bluetooth
@@ -108,9 +99,6 @@ ssh ggomes@localhost -p 2222
 
 # bash run.sh s4qRI8ezYhR947BJ39sF
 # bash run.sh rYhGRvkYLA2HHyrhuMMd
-
-forever stopall
-forever print.js &
 
     1  sudo nano /etc/cups/cupsd.conf
     2  sudo systemctl restart cups
