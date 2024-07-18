@@ -1,0 +1,3 @@
+SUBSYSTEM=="usb", ATTR{idVendor}=="0fe6", ATTR{idProduct}=="811e", MODE="0666", GROUP="lp", SYMLINK+="usbprinter"
+SUBSYSTEM=="usb", ATTR{idVendor}=="1fc9", ATTR{idProduct}=="2016", MODE="0666", GROUP="lp", SYMLINK+="usbprinter"
+SUBSYSTEM=="usb", ATTR{idVendor}=="067b", ATTR{idProduct}=="2305", MODE="0666", GROUP="lp", SYMLINK+="usbprinter"
