@@ -13,11 +13,13 @@ sshpass -p 'tmp12345' scp start_tastic.sh $IP:/home/ggomes/start_tastic.sh
 sshpass -p 'tmp12345' ssh $IP 'sudo mv /home/ggomes/start_tastic.sh /usr/local/bin/start_tastic.sh && sudo chmod +x /usr/local/bin/start_tastic.sh'
 sshpass -p 'tmp12345' scp tastic.service $IP:/home/ggomes/tastic.service
 sshpass -p 'tmp12345' ssh $IP 'sudo mv /home/ggomes/tastic.service /etc/systemd/system/tastic.service'
+sshpass -p 'tmp12345' ssh $IP 'sudo systemctl stop tastic'
+sshpass -p 'tmp12345' ssh $IP 'sudo systemctl disable tastic'
 sshpass -p 'tmp12345' ssh $IP 'sudo systemctl daemon-reload'
 sshpass -p 'tmp12345' ssh $IP 'sudo systemctl enable tastic'
 sshpass -p 'tmp12345' ssh $IP 'sudo systemctl start tastic'
 sshpass -p 'tmp12345' ssh $IP 'sudo systemctl status tastic'
-sleep 8
+sleep 16
 sshpass -p 'tmp12345' ssh $IP 'sudo journalctl -u tastic.service -b'
 sshpass -p 'tmp12345' ssh $IP 'tail -n100 /home/ggomes/start_tastic.log'
 

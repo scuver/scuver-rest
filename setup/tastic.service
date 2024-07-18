@@ -8,7 +8,7 @@ Type=simple
 ExecStart=/usr/local/bin/start_tastic.sh
 Restart=on-failure
 User=ggomes
-Environment=PATH=/usr/bin:/bin:/usr/local/bin:/usr/local/sbin
+Environment=PATH=/usr/bin:/bin:/usr/local/bin:/usr/local/sbin:/home/ggomes/.nvm/versions/node/v14.21.3/bin
 Environment=PM2_HOME=/home/ggomes/.pm2
 
 [Install]
