@@ -8,11 +8,11 @@ git push
 ssh 168.119.202.164 "cd /Users/ggomes/dev/scuver-rest && git pull"
 update_command_target='cd /home/ggomes/scuver-rest && git pull'
 update_command="sshpass -p $PASS ssh -p$TARGET_SSH_PORT localhost $update_command_target"
-ssh 168.119.202.164 $update_command
 setup_service_command="cd setup && bash setup_service.sh $TARGET_SSH_PORT localhost $LT_HOST"
-#echo "bash setup/setup_base.sh $TARGET_SSH_PORT localhost"
+echo $update_command
 echo $setup_service_command
 ssh 168.119.202.164
+#echo "bash setup/setup_base.sh $TARGET_SSH_PORT localhost"
 
 #open -a "Google Chrome" http://$IP:631
 ## TasticPrinter -> Raw -> Raw
