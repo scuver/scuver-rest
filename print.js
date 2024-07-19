@@ -64,7 +64,7 @@ async function printEscpos(escpos, qrcode) {
     await printer.raw(result);
     if (qrcode) {
       try {
-        await printer.qrimage(qrcode, {mode: 'dh'});
+        await printer.qrimage(qrcode);
       } catch (e) {
         console.error('Error printing qrcode', ex);
       }
