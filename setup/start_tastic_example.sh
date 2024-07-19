@@ -16,12 +16,12 @@ sleep 15  # Adjust this delay as necessary
 echo "Starting services..." >> $LOGFILE
 
 # Start SSH tunnel with retries for network issues only
-SSH_COMMAND="$AUTOSSH_BIN -M 0 -N -R :localhost:22 168.119.202.164 -i $SSH_IDENTITY"
+SSH_COMMAND="$AUTOSSH_BIN -M 0 -N -R TARGET_PORT:localhost:22 168.119.202.164 -i $SSH_IDENTITY"
 RETRY_COUNT=0
 MAX_RETRIES=5
 
 # Start pm2
-$PM2_BIN start /home/ggomes/scuver-rest/print.js --name tastic-print >> $LOGFILE 2>&1
+$PM2_BIN start /home/ggomes/scuver-rest/print.js --name tastic-print -f >> $LOGFILE 2>&1
 $PM2_BIN save >> $LOGFILE 2>&1
 echo "Started pm2 service" >> $LOGFILE
 

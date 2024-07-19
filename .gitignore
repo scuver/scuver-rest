@@ -1,3 +1,4 @@
 .idea
 node_modules
 .env
+start_tastic_GENERATED.sh

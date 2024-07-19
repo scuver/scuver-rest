@@ -4,10 +4,11 @@ TARGET_IP=${2:-localhost}
 LT_HOST=${3:-varunca-print}
 PASS=tmp12345
 
-sed "s/TARGET_PORT/$TARGET_PORT/g; s/LT_HOST/$LT_HOST/g" "start_tastic.sh" > "start_tastic.sh.tmp"
-mv "start_tastic.sh.tmp" "start_tastic.sh"
+sed "s/TARGET_PORT/$TARGET_SSH_PORT/g; s/LT_HOST/$LT_HOST/g" "start_tastic_example.sh" > "start_tastic_GENERATED.sh"
 
-sshpass -p $PASS scp -P $TARGET_SSH_PORT start_tastic.sh $TARGET_IP:/home/ggomes/start_tastic.sh
+sshpass -p $PASS scp -P $TARGET_SSH_PORT  ~/.ssh/id_rsa $TARGET_IP:/home/ggomes/.ssh/
+sshpass -p $PASS scp -P $TARGET_SSH_PORT  ~/.ssh/id_rsa.pub $TARGET_IP:/home/ggomes/.ssh/
+sshpass -p $PASS scp -P $TARGET_SSH_PORT start_tastic_GENERATED.sh $TARGET_IP:/home/ggomes/start_tastic.sh
 sshpass -p $PASS ssh -p $TARGET_SSH_PORT $TARGET_IP 'sudo mv /home/ggomes/start_tastic.sh /usr/local/bin/start_tastic.sh && sudo chmod +x /usr/local/bin/start_tastic.sh'
 sshpass -p $PASS scp -P $TARGET_SSH_PORT tastic.service $TARGET_IP:/home/ggomes/tastic.service
 sshpass -p $PASS ssh -p $TARGET_SSH_PORT $TARGET_IP 'sudo mv /home/ggomes/tastic.service /etc/systemd/system/tastic.service'
@@ -18,5 +19,5 @@ sshpass -p $PASS ssh -p $TARGET_SSH_PORT $TARGET_IP 'sudo systemctl enable tasti
 sshpass -p $PASS ssh -p $TARGET_SSH_PORT $TARGET_IP 'sudo systemctl start tastic'
 sshpass -p $PASS ssh -p $TARGET_SSH_PORT $TARGET_IP 'sudo systemctl status tastic'
 sleep 20
-sshpass -p $PASS ssh -p $TARGET_SSH_PORT $TARGET_IP 'sudo journalctl -u tastic.service -b'
+#sshpass -p $PASS ssh -p $TARGET_SSH_PORT $TARGET_IP 'sudo journalctl -u tastic.service -b'
 sshpass -p $PASS ssh -p $TARGET_SSH_PORT $TARGET_IP 'tail -n100 /home/ggomes/start_tastic.log'
