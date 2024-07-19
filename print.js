@@ -55,8 +55,16 @@ async function printEscpos(escpos, qrcode) {
     const options = { encoding: "GB18030" /* default */ }
     let printer = new Printer(device, options);
     if (qrcode) {
-      await printer.qrimage(qrcode, {size: 50});
-      await printer.qrcode(qrcode);
+      try {
+        await printer.qrimage(qrcode, {size: 50});
+      } catch (e) {
+        console.error('Error printing qrcode', e);
+      }
+      try {
+        await printer.qrcode(qrcode);
+      } catch (e) {
+        console.error('Error printing qrcode', e);
+      }
     }
     await printer.raw(result);
     await printer.close();
