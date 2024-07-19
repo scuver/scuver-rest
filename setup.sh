@@ -4,7 +4,8 @@ git commit -m "deploy"
 git push
 TARGET_SSH_PORT=2223 # 2222 - assim, 2223 - varunca
 LT_HOST=varunca-print # tastic-print - assim, varunca-print - varunca
-ssh -p$TARGET_SSH_PORT localhost "cd /home/ggomes/scuver-rest && git pull"
+PASS=tmp12345
+sshpass -p $PASS ssh -p$TARGET_SSH_PORT localhost "cd /home/ggomes/scuver-rest && git pull"
 bash /Users/ggomes/dev/scuver-rest/setup/setup_service.sh $TARGET_SSH_PORT localhost $LT_HOST
 #ssh 168.119.202.164  "cd /Users/ggomes/dev/scuver-rest && git pull"
 #ssh 168.119.202.164  "bash /Users/ggomes/dev/scuver-rest/setup/setup_base.sh $TARGET_SSH_PORT localhost"
