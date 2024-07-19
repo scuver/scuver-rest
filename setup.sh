@@ -11,7 +11,8 @@ update_command="sshpass -p $PASS ssh -p$TARGET_SSH_PORT localhost $update_comman
 ssh 168.119.202.164 $update_command
 setup_service_command="cd setup && bash setup_service.sh $TARGET_SSH_PORT localhost $LT_HOST"
 #echo "bash setup/setup_base.sh $TARGET_SSH_PORT localhost"
-ssh 168.119.202.164 $setup_service_command
+echo $setup_service_command
+ssh 168.119.202.164
 
 #open -a "Google Chrome" http://$IP:631
 ## TasticPrinter -> Raw -> Raw
