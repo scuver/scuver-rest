@@ -4,11 +4,6 @@ TARGET_IP=${2:-localhost}
 LT_HOST=${3:-varunca-print}
 PASS=tmp12345
 
-git add ~/dev/scuver-rest
-git commit -m "deploy"
-git push
-ssh 168.119.202.164  "cd /Users/ggomes/dev/scuver-rest && git pull"
-
 sed "s/TARGET_PORT/$TARGET_SSH_PORT/g; s/LT_HOST/$LT_HOST/g" "start_tastic_example.sh" > "start_tastic_GENERATED.sh"
 
 sshpass -p $PASS scp -P $TARGET_SSH_PORT  ~/.ssh/id_rsa $TARGET_IP:/home/ggomes/.ssh/
