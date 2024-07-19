@@ -56,7 +56,7 @@ async function printEscpos(escpos, qrcode) {
     let printer = new Printer(device, options);
     if (qrcode) {
       try {
-        await printer.qrimage(qrcode, {size: 50});
+        await printer.qrimage(qrcode, {margin: 5});
       } catch (e) {
         console.error('Error printing qrcode', e);
       }
