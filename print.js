@@ -3,6 +3,7 @@ const express = require("express");
 // const fs = require("fs");
 // const path = require("path");
 const cors = require('cors')({origin: '*'});
+const QRCode = require('qrcode');
 
 // const { ThermalPrinter, PrinterTypes, CharacterSet, BreakLine } = require('node-thermal-printer');
 //
@@ -63,7 +64,7 @@ async function printEscpos(escpos, qrcode) {
     // }
     if (qrcode) {
       try {
-        await printer.image(qrcode);
+        await printer.raw(await QRCode.toBuffer(qrcode));
       } catch (ex) {
         console.error('Error printing qrcode', ex);
       }

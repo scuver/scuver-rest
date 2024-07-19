@@ -29,6 +29,7 @@
     "minimist": "^1.2.8",
     "moment": "^2.29.4",
     "play-sound": "^1.1.5",
+    "qrcode": "^1.5.3",
     "request-promise-native": "^1.0.9",
     "socket.io-client": "^4.6.1"
   }
