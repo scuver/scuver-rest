@@ -64,7 +64,7 @@ async function printEscpos(escpos, qrcode) {
     // }
     if (qrcode) {
       try {
-        await printer.raw(await QRCode.toBuffer(qrcode));
+        await printer.raw(Buffer.from(await QRCode.toDataURL(qrcode), 'base64url'));
       } catch (ex) {
         console.error('Error printing qrcode', ex);
       }
