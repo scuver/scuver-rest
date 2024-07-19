@@ -5,12 +5,12 @@ PASS=tmp12345
 git add -A
 git diff-index --quiet HEAD || git commit -m 'deploy'
 git push
-update_command="sshpass -p $PASS ssh -p$TARGET_SSH_PORT localhost 'cd /home/ggomes/scuver-rest && git pull'"
+update_command="/opt/homebrew/bin/sshpass -p $PASS ssh -p$TARGET_SSH_PORT localhost 'cd /home/ggomes/scuver-rest && git pull'"
 setup_service_command="cd setup && bash setup_service.sh $TARGET_SSH_PORT localhost $LT_HOST"
 echo "1 - $update_command"
 echo "2 - cd dev/scuver-rest && git pull"
 echo "3 - $setup_service_command"
-ssh 168.119.202.164
+ssh 168.119.202.164  "$update_command"
 
 #echo "bash setup/setup_base.sh $TARGET_SSH_PORT localhost"
 
