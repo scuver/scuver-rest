@@ -9,8 +9,8 @@ ssh 168.119.202.164 "cd /Users/ggomes/dev/scuver-rest && git pull"
 update_command_target='cd /home/ggomes/scuver-rest && git pull'
 update_command="sshpass -p $PASS ssh -p$TARGET_SSH_PORT localhost $update_command_target"
 setup_service_command="cd setup && bash setup_service.sh $TARGET_SSH_PORT localhost $LT_HOST"
-echo $update_command
-echo $setup_service_command
+echo "1- $update_command"
+echo "2- $setup_service_command"
 ssh 168.119.202.164
 #echo "bash setup/setup_base.sh $TARGET_SSH_PORT localhost"
 
