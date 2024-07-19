@@ -6,10 +6,12 @@ git add -A
 git diff-index --quiet HEAD || git commit -m 'deploy'
 git push
 ssh 168.119.202.164 "cd /Users/ggomes/dev/scuver-rest && git pull"
-echo "sshpass -p $PASS ssh -p$TARGET_SSH_PORT localhost 'cd /home/ggomes/scuver-rest && git pull'"
+update_command_target='cd /home/ggomes/scuver-rest && git pull'
+update_command="sshpass -p $PASS ssh -p$TARGET_SSH_PORT localhost $update_command_target"
+ssh 168.119.202.164 $update_command
+setup_service_command="cd setup && bash setup_service.sh $TARGET_SSH_PORT localhost $LT_HOST"
 #echo "bash setup/setup_base.sh $TARGET_SSH_PORT localhost"
-echo "bash setup/setup_service.sh $TARGET_SSH_PORT localhost $LT_HOST"
-ssh 168.119.202.164
+ssh 168.119.202.164 $setup_service_command
 
 #open -a "Google Chrome" http://$IP:631
 ## TasticPrinter -> Raw -> Raw
