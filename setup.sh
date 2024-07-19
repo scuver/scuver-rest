@@ -3,7 +3,6 @@
 git add .
 git commit -m "deploy"
 git push
-
 TARGET_SSH_PORT=2223 # 2222 - assim, 2223 - varunca
 LT_HOST=varunca-print # tastic-print - assim, varunca-print - varunca
 ssh -p $TARGET_SSH_PORT localhost "cd /home/ggomes/scuver-rest && git pull"
