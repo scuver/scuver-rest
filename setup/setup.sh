@@ -1,45 +1,27 @@
 #!/bin/bash -ex
 
-# arp -a
-# ssh ggomes@<rasp_ip>
-# sudo raspi-config
+git add .
+git commit -m "deploy"
+git push
 
-RASP_IP=192.168.1.196
-TARGET_SSH_PORT=2223
-LT_HOST=varunca-print
-IP=168.119.202.164
-SSH_PORT=22 # 2222 - assim, 2223 - varunca
-PASS=2WS4rf3ed!
-
-INPUT_FILE="input_file.txt"
-OUTPUT_FILE="output_file.txt"
-
-sed "s/TARGET_PORT/$TARGET_PORT/g; s/LT_HOST/$LT_HOST/g" "start_tastic.sh" > "start_tastic.sh.tmp"
-mv "start_tastic.sh.tmp" "start_tastic.sh"
-
-sshpass -p $PASS ssh -p $SSH_PORT $IP  "autossh -M 0 -N -R $TARGET_SSH_PORT:localhost:22 ggomes@168.119.202.164 -i /home/ggomes/.ssh/id_rsa"
-sshpass -p $PASS scp -P $SSH_PORT cupsd.conf $IP:/etc/cups/cupsd.conf
-sshpass -p $PASS scp -P $SSH_PORT 99-usb-printer.rules /etc/udev/rules.d/99-usb-printer.rules
-sshpass -p $PASS scp -P $SSH_PORT ~/.ssh/id_rsa $IP:/home/ggomes/.ssh/
-sshpass -p $PASS scp -P $SSH_PORT ~/.ssh/id_rsa.pub $IP:/home/ggomes/.ssh/
-sshpass -p $PASS scp -P $SSH_PORT setup_base.sh $IP:/home/ggomes/setup_base.sh
-sshpass -p $PASS scp -P $SSH_PORT setup_service.sh $IP:/home/ggomes/setup_service.sh
-sshpass -p $PASS ssh -p $SSH_PORT $IP  'chmod +x /home/ggomes/setup_base.sh'
-sshpass -p $PASS ssh -p $SSH_PORT $IP  'chmod +x /home/ggomes/setup_service.sh'
-sshpass -p $PASS ssh -p $SSH_PORT $IP  "bash /home/ggomes/setup_base.sh $TARGET_SSH_PORT"
-sshpass -p $PASS ssh -p $SSH_PORT $IP  "bash /home/ggomes/setup_service.sh $TARGET_SSH_PORT"
+TARGET_SSH_PORT=2223 # 2222 - assim, 2223 - varunca
+LT_HOST=varunca-print # tastic-print - assim, varunca-print - varunca
+ssh 168.119.202.164  "cd /Users/ggomes/dev/scuver-rest && git pull"
+#ssh 168.119.202.164  "bash /Users/ggomes/dev/scuver-rest/setup_base.sh $TARGET_SSH_PORT localhost"
+ssh 168.119.202.164  "bash /Users/ggomes/dev/scuver-rest/setup_service.sh $TARGET_SSH_PORT localhost $LT_HOST"
 
 #open -a "Google Chrome" http://$IP:631
 ## TasticPrinter -> Raw -> Raw
 #echo "Reboot the rpi?"
 #select yn in "Yes" "No"; do
 #    case $yn in
-#        Yes ) sshpass -p $PASS ssh -p $SSH_PORT $IP 'sudo reboot'; break;;
+#        Yes ) ssh $IP 'sudo reboot'; break;;
 #        No ) exit;;
 #    esac
 #done
 
-# OLD
+
+# v OLD v
 
 #forever stopall
 #killall forever
@@ -52,7 +34,7 @@ sshpass -p $PASS ssh -p $SSH_PORT $IP  "bash /home/ggomes/setup_service.sh $TARG
 
 #echo 'ssh -i ~/.ssh/id_rsa 168.119.202.164'
 #echo "ssh localhost -p $SSH_PORT"
-#sshpass -p $PASS ssh $IP
+#ssh $IP
 
 ## ligar ao rasp por ethernet
 #arp -a

@@ -16,7 +16,7 @@ sleep 15  # Adjust this delay as necessary
 echo "Starting services..." >> $LOGFILE
 
 # Start SSH tunnel with retries for network issues only
-SSH_COMMAND="$AUTOSSH_BIN -M 0 -N -R TARGET_PORT:localhost:22 168.119.202.164 -i $SSH_IDENTITY"
+SSH_COMMAND="$AUTOSSH_BIN -M 0 -N -R :localhost:22 168.119.202.164 -i $SSH_IDENTITY"
 RETRY_COUNT=0
 MAX_RETRIES=5
 
@@ -27,11 +27,11 @@ echo "Started pm2 service" >> $LOGFILE
 
 # Start localtunnel
 sleep 2
-$LT_BIN --port 3222 --subdomain LT_HOST >> $LOGFILE 2>&1 &
+$LT_BIN --port 3222 --subdomain varunca-print >> $LOGFILE 2>&1 &
 sleep 2
-$LT_BIN --port 3222 --subdomain LT_HOST >> $LOGFILE 2>&1 &
+$LT_BIN --port 3222 --subdomain varunca-print >> $LOGFILE 2>&1 &
 sleep 2
-$LT_BIN --port 3222 --subdomain LT_HOST >> $LOGFILE 2>&1 &
+$LT_BIN --port 3222 --subdomain varunca-print >> $LOGFILE 2>&1 &
 echo "Started localtunnel" >> $LOGFILE
 
 until $SSH_COMMAND >> $LOGFILE 2>&1 || [ $RETRY_COUNT -eq $MAX_RETRIES ]; do
