@@ -2,8 +2,8 @@
 TARGET_SSH_PORT=2223 # 2222 - assim, 2223 - varunca
 LT_HOST=varunca-print # tastic-print - assim, varunca-print - varunca
 PASS=tmp12345
-git add .
-git commit -m "deploy"
+git add -A
+git diff-index --quiet HEAD || git commit -m 'deploy'
 git push
 ssh 168.119.202.164 "cd /Users/ggomes/dev/scuver-rest && git pull"
 echo "sshpass -p $PASS ssh -p$TARGET_SSH_PORT localhost 'cd /home/ggomes/scuver-rest && git pull'"
