@@ -3,7 +3,7 @@ const express = require("express");
 // const fs = require("fs");
 // const path = require("path");
 const cors = require('cors')({origin: '*'});
-const QRCode = require('qrcode');
+// const QRCode = require('qrcode');
 
 // const { ThermalPrinter, PrinterTypes, CharacterSet, BreakLine } = require('node-thermal-printer');
 //
@@ -55,16 +55,16 @@ async function printEscpos(escpos, qrcode) {
     const result = Buffer.from(escpos, 'base64');
     const options = { encoding: "GB18030" /* default */ }
     let printer = new Printer(device, options);
-    // if (qrcode) {
-    //     try {
-    //       await printer.qrcode(qrcode);
-    //     } catch (ex) {
-    //       console.error('Error printing qrcode', ex);
-    //     }
-    // }
+    if (qrcode) {
+        try {
+          await printer.qrcode(qrcode);
+        } catch (ex) {
+          console.error('Error printing qrcode', ex);
+        }
+    }
     if (qrcode) {
       try {
-        await printer.print(await QRCode.toString(qrcode));
+        await printer.qrimage(qrcode);
       } catch (ex) {
         console.error('Error printing qrcode', ex);
       }
