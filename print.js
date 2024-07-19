@@ -55,17 +55,20 @@ async function printEscpos(escpos, qrcode) {
     const options = { encoding: "GB18030" /* default */ }
     let printer = new Printer(device, options);
     if (qrcode) {
-      try {
-        await printer.qrimage(qrcode, {mode: 'dh'});
-      } catch (e) {
         try {
           await printer.qrcode(qrcode);
         } catch (ex) {
           console.error('Error printing qrcode', ex);
         }
-      }
     }
     await printer.raw(result);
+    if (qrcode) {
+      try {
+        await printer.qrimage(qrcode, {mode: 'dh'});
+      } catch (e) {
+        console.error('Error printing qrcode', ex);
+      }
+    }
     await printer.close();
   });
   // await device.open(async function(err){
