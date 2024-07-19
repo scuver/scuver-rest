@@ -12,7 +12,7 @@ echo "Script started at $(date)" >> $LOGFILE
 
 # Add a delay to ensure the network is ready
 echo "Waiting for network to be ready..." >> $LOGFILE
-sleep 15  # Adjust this delay as necessary
+sleep SLEEP_FOR  # Adjust this delay as necessary
 echo "Starting services..." >> $LOGFILE
 
 # Start SSH tunnel with retries for network issues only

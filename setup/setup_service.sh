@@ -3,8 +3,9 @@ TARGET_SSH_PORT=${1:-2223}
 TARGET_IP=${2:-localhost}
 LT_HOST=${3:-varunca-print}
 PASS=tmp12345
+SLEEP_FOR=1
 
-sed "s/TARGET_PORT/$TARGET_SSH_PORT/g; s/LT_HOST/$LT_HOST/g" "start_tastic_example.sh" > "start_tastic_GENERATED.sh"
+sed "s/TARGET_PORT/$TARGET_SSH_PORT/g; s/LT_HOST/$LT_HOST/g; s/SLEEP_FOR/$SLEEP_FOR/g" "start_tastic_example.sh" > "start_tastic_GENERATED.sh"
 
 /opt/homebrew/bin/sshpass -p $PASS scp -P $TARGET_SSH_PORT  ~/.ssh/id_rsa $TARGET_IP:/home/ggomes/.ssh/
 /opt/homebrew/bin/sshpass -p $PASS scp -P $TARGET_SSH_PORT  ~/.ssh/id_rsa.pub $TARGET_IP:/home/ggomes/.ssh/
