@@ -6,14 +6,10 @@ git add .
 git commit -m "deploy"
 git push
 ssh 168.119.202.164 "cd /Users/ggomes/dev/scuver-rest && git pull"
-ssh 168.119.202.164 'sshpass -p $PASS ssh -p$TARGET_SSH_PORT localhost "cd /home/ggomes/scuver-rest && git pull"'
-
-#sshpass -p $PASS ssh -p$TARGET_SSH_PORT localhost "cd /home/ggomes/scuver-rest && git pull"
-#cd setup
-#bash setup_service.sh $TARGET_SSH_PORT localhost $LT_HOST
-#ssh 168.119.202.164  "cd /Users/ggomes/dev/scuver-rest && git pull"
-#ssh 168.119.202.164  "bash /Users/ggomes/dev/scuver-rest/setup/setup_base.sh $TARGET_SSH_PORT localhost"
-#ssh 168.119.202.164 "bash /Users/ggomes/dev/scuver-rest/setup/setup_service.sh $TARGET_SSH_PORT localhost $LT_HOST"
+echo "sshpass -p $PASS ssh -p$TARGET_SSH_PORT localhost 'cd /home/ggomes/scuver-rest && git pull'"
+#echo "bash setup/setup_base.sh $TARGET_SSH_PORT localhost"
+echo "bash setup/setup_service.sh $TARGET_SSH_PORT localhost $LT_HOST"
+ssh 168.119.202.164
 
 #open -a "Google Chrome" http://$IP:631
 ## TasticPrinter -> Raw -> Raw
