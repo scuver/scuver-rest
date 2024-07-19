@@ -2,71 +2,57 @@
 
 # arp -a
 # ssh ggomes@<rasp_ip>
-# sudo raspi-config,
-# sudo reboot
+# sudo raspi-config
 
-IP=192.168.1.196
-SSH_PORT=2223 # 2222 - assim, 2223 - varunca
-#HOST=varunca # tastic=assim varunca
+RASP_IP=192.168.1.196
+TARGET_SSH_PORT=2223
+LT_HOST=varunca-print
+IP=168.119.202.164
+SSH_PORT=22 # 2222 - assim, 2223 - varunca
+PASS=2WS4rf3ed!
 
-sshpass -p 'tmp12345' scp start_tastic.sh $IP:/home/ggomes/start_tastic.sh
-sshpass -p 'tmp12345' ssh $IP 'sudo mv /home/ggomes/start_tastic.sh /usr/local/bin/start_tastic.sh && sudo chmod +x /usr/local/bin/start_tastic.sh'
-sshpass -p 'tmp12345' scp tastic.service $IP:/home/ggomes/tastic.service
-sshpass -p 'tmp12345' ssh $IP 'sudo mv /home/ggomes/tastic.service /etc/systemd/system/tastic.service'
-sshpass -p 'tmp12345' ssh $IP 'sudo systemctl stop tastic'
-sshpass -p 'tmp12345' ssh $IP 'sudo systemctl disable tastic'
-sshpass -p 'tmp12345' ssh $IP 'sudo systemctl daemon-reload'
-sshpass -p 'tmp12345' ssh $IP 'sudo systemctl enable tastic'
-sshpass -p 'tmp12345' ssh $IP 'sudo systemctl start tastic'
-sshpass -p 'tmp12345' ssh $IP 'sudo systemctl status tastic'
-sleep 16
-sshpass -p 'tmp12345' ssh $IP 'sudo journalctl -u tastic.service -b'
-sshpass -p 'tmp12345' ssh $IP 'tail -n100 /home/ggomes/start_tastic.log'
+INPUT_FILE="input_file.txt"
+OUTPUT_FILE="output_file.txt"
 
-exit 0
+sed "s/TARGET_PORT/$TARGET_PORT/g; s/LT_HOST/$LT_HOST/g" "start_tastic.sh" > "start_tastic.sh.tmp"
+mv "start_tastic.sh.tmp" "start_tastic.sh"
 
-sshpass -p 'tmp12345' ssh $IP 'sudo apt-get update'
-sshpass -p 'tmp12345' ssh $IP 'sudo apt-get install cups autossh sshpass git  -y'
-sshpass -p 'tmp12345' ssh $IP 'curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash'
-sshpass -p 'tmp12345' ssh $IP 'source /home/ggomes/.bashrc'
-sshpass -p 'tmp12345' ssh $IP 'nvm install 14'
-sshpass -p 'tmp12345' ssh $IP 'npm install -g localtunnel'
-sshpass -p 'tmp12345' ssh $IP 'npm install -g pm2'
-sshpass -p 'tmp12345' ssh $IP 'sudo usermod -a -G lpadmin ggomes'
-sshpass -p 'tmp12345' scp cupsd.conf $IP:/etc/cups/cupsd.conf
-# lsusb
-sshpass -p 'tmp12345' scp 99-usb-printer.rules /etc/udev/rules.d/99-usb-printer.rules
-sshpass -p 'tmp12345' ssh $IP 'sudo udevadm control --reload-rules'
-sshpass -p 'tmp12345' ssh $IP 'sudo udevadm trigger'
-sshpass -p 'tmp12345' ssh $IP 'sudo usermod -aG plugdev $USER'
-sshpass -p 'tmp12345' ssh $IP 'sudo systemctl restart cups'
-sshpass -p 'tmp12345' ssh $IP 'git clone https://github.com/scuver/scuver-rest.git'
-sshpass -p 'tmp12345' ssh $IP 'cd scuver-rest && npm i'
-sshpass -p 'tmp12345' scp start_tastic.sh $IP:/usr/local/bin/start_tastic.sh
-sshpass -p 'tmp12345' ssh $IP 'sudo chmod +x /usr/local/bin/start_tastic.sh'
-sshpass -p 'tmp12345' scp tastic.service $IP:/etc/systemd/system/tastic.service
-sshpass -p 'tmp12345' ssh $IP 'sudo systemctl daemon-reload'
-sshpass -p 'tmp12345' ssh $IP 'sudo systemctl enable tastic'
-sshpass -p 'tmp12345' ssh $IP 'sudo systemctl start tastic'
-sshpass -p 'tmp12345' ssh $IP 'sudo systemctl status tastic'
-sshpass -p 'tmp12345' ssh $IP 'cat /home/ggomes/start_tastic.log'
-sshpass -p 'tmp12345' scp ~/.ssh/id_rsa $IP:/home/ggomes/.ssh/
-sshpass -p 'tmp12345' scp ~/.ssh/id_rsa.pub $IP:/home/ggomes/.ssh/
-sshpass -p 'tmp12345' ssh $IP  'ssh -o StrictHostKeyChecking=no 168.119.202.164'
-open -a "Google Chrome" http://$IP:631
-# TasticPrinter -> Raw -> Raw
-echo "Reboot the rpi?"
-select yn in "Yes" "No"; do
-    case $yn in
-        Yes ) sshpass -p 'tmp12345' ssh $IP 'sudo reboot'; break;;
-        No ) exit;;
-    esac
-done
+sshpass -p $PASS ssh -p $SSH_PORT $IP  "autossh -M 0 -N -R $TARGET_SSH_PORT:localhost:22 ggomes@168.119.202.164 -i /home/ggomes/.ssh/id_rsa"
+sshpass -p $PASS scp -P $SSH_PORT cupsd.conf $IP:/etc/cups/cupsd.conf
+sshpass -p $PASS scp -P $SSH_PORT 99-usb-printer.rules /etc/udev/rules.d/99-usb-printer.rules
+sshpass -p $PASS scp -P $SSH_PORT ~/.ssh/id_rsa $IP:/home/ggomes/.ssh/
+sshpass -p $PASS scp -P $SSH_PORT ~/.ssh/id_rsa.pub $IP:/home/ggomes/.ssh/
+sshpass -p $PASS scp -P $SSH_PORT setup_base.sh $IP:/home/ggomes/setup_base.sh
+sshpass -p $PASS scp -P $SSH_PORT setup_service.sh $IP:/home/ggomes/setup_service.sh
+sshpass -p $PASS ssh -p $SSH_PORT $IP  'chmod +x /home/ggomes/setup_base.sh'
+sshpass -p $PASS ssh -p $SSH_PORT $IP  'chmod +x /home/ggomes/setup_service.sh'
+sshpass -p $PASS ssh -p $SSH_PORT $IP  "bash /home/ggomes/setup_base.sh $TARGET_SSH_PORT"
+sshpass -p $PASS ssh -p $SSH_PORT $IP  "bash /home/ggomes/setup_service.sh $TARGET_SSH_PORT"
 
+#open -a "Google Chrome" http://$IP:631
+## TasticPrinter -> Raw -> Raw
+#echo "Reboot the rpi?"
+#select yn in "Yes" "No"; do
+#    case $yn in
+#        Yes ) sshpass -p $PASS ssh -p $SSH_PORT $IP 'sudo reboot'; break;;
+#        No ) exit;;
+#    esac
+#done
+
+# OLD
+
+#forever stopall
+#killall forever
+#killall node
+#pm2 start print.js
+#forever print.js &
+#lt --port 3222 --subdomain tastic-print &
+#forever notify.js --shop=$1 &
+#forever uber.js --shop=$1
 
 #echo 'ssh -i ~/.ssh/id_rsa 168.119.202.164'
 #echo "ssh localhost -p $SSH_PORT"
-#sshpass -p 'tmp12345' ssh $IP
+#sshpass -p $PASS ssh $IP
 
 ## ligar ao rasp por ethernet
 #arp -a
