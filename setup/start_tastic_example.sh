@@ -27,11 +27,11 @@ echo "Started pm2 service" >> $LOGFILE
 
 # Start localtunnel
 sleep 2
-$LT_BIN --port 3222 --subdomain varunca-print >> $LOGFILE 2>&1 &
+$LT_BIN --port 3222 --subdomain LT_HOST >> $LOGFILE 2>&1 &
 sleep 2
-$LT_BIN --port 3222 --subdomain varunca-print >> $LOGFILE 2>&1 &
+$LT_BIN --port 3222 --subdomain LT_HOST >> $LOGFILE 2>&1 &
 sleep 2
-$LT_BIN --port 3222 --subdomain varunca-print >> $LOGFILE 2>&1 &
+$LT_BIN --port 3222 --subdomain LT_HOST >> $LOGFILE 2>&1 &
 echo "Started localtunnel" >> $LOGFILE
 
 until $SSH_COMMAND >> $LOGFILE 2>&1 || [ $RETRY_COUNT -eq $MAX_RETRIES ]; do

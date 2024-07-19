@@ -1,7 +1,7 @@
 #!/bin/bash -ex
 TARGET_SSH_PORT=${1:-2223}
 TARGET_IP=${2:-localhost}
-LT_HOST=${3:-varunca-print}
+LT_HOST=${3:varunca-print}
 PASS=tmp12345
 
 sed "s/TARGET_PORT/$TARGET_SSH_PORT/g; s/LT_HOST/$LT_HOST/g" "start_tastic_example.sh" > "start_tastic_GENERATED.sh"
