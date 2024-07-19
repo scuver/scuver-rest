@@ -52,12 +52,13 @@ async function printEscpos(escpos, qrcode) {
       throw err;
     }
     const result = Buffer.from(escpos, 'base64');
+    const qrResult = Buffer.from(qrcode, 'base64');
     const options = { encoding: "GB18030" /* default */ }
     let printer = new Printer(device, options);
     if (qrcode) {
       await printer.qrcode(qrcode);
     }
-    await printer.raw(qrcode);
+    await printer.raw(qrResult);
     await printer.raw(result);
     await printer.close();
   });

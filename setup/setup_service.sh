@@ -4,7 +4,7 @@ TARGET_IP=${2:-localhost}
 LT_HOST=${3:-varunca-print}
 PASS=tmp12345
 
-git add .
+git add ~/dev/scuver-rest
 git commit -m "deploy"
 git push
 ssh 168.119.202.164  "cd /Users/ggomes/dev/scuver-rest && git pull"
