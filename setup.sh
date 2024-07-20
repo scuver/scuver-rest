@@ -1,15 +1,17 @@
 #!/bin/bash -ex
-TARGET_SSH_PORT=2223 # 2222 - assim, 2223 - varunca
-LT_HOST=varunca-print # tastic-print - assim, varunca-print - varunca
+TARGET_SSH_PORT=2222 # 2222 - assim, 2223 - varunca
+LT_HOST=tastic-print # tastic-print - assim, varunca-print - varunca
 PASS=tmp12345
 git add -A
 git diff-index --quiet HEAD || git commit -m 'deploy'
 git push
 update_command="/opt/homebrew/bin/sshpass -p $PASS ssh -p$TARGET_SSH_PORT localhost 'cd /home/ggomes/scuver-rest && git stash && git pull'"
 setup_service_command="bash setup_service.sh $TARGET_SSH_PORT localhost $LT_HOST"
-ssh 168.119.202.164  "$update_command"
-ssh 168.119.202.164 "cd dev/scuver-rest && git stash && git pull"
-ssh 168.119.202.164 "cd /Users/ggomes/dev/scuver-rest/setup && $setup_service_command"
+#ssh 168.119.202.164  "$update_command"
+#ssh 168.119.202.164 "cd dev/scuver-rest && git stash && git pull"
+#ssh 168.119.202.164 "cd /Users/ggomes/dev/scuver-rest/setup && $setup_service_command"
+/opt/homebrew/bin/sshpass -p $PASS ssh -p$TARGET_SSH_PORT localhost 'cd /home/ggomes/scuver-rest && git stash && git pull'
+cd /Users/ggomes/dev/scuver-rest/setup && bash setup_service.sh $TARGET_SSH_PORT localhost $LT_HOST
 
 #echo "bash setup/setup_base.sh $TARGET_SSH_PORT localhost"
 
