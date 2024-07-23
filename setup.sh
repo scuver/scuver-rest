@@ -12,8 +12,8 @@ setup_service_command="cd /Users/ggomes/dev/scuver-rest/setup && bash setup_serv
 #ssh 168.119.202.164 "$git_command"
 #ssh 168.119.202.164 "$setup_service_command"
 #bash $git_command
-bash $update_command
-bash $setup_service_command
+bash "$update_command"
+bash "$setup_service_command"
 #/opt/homebrew/bin/sshpass -p $PASS ssh -p$TARGET_SSH_PORT localhost 'cd /home/ggomes/scuver-rest && git stash && git pull'
 #cd /Users/ggomes/dev/scuver-rest/setup && bash setup_service.sh $TARGET_SSH_PORT localhost $LT_HOST
 
