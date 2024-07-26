@@ -17,6 +17,7 @@ echo "Starting services..." >> $LOGFILE
 
 # Start SSH tunnel with retries for network issues only
 SSH_COMMAND="$AUTOSSH_BIN -M 0 -N -R TARGET_PORT:localhost:22 168.119.202.164 -i $SSH_IDENTITY"
+SERVEO_COMMAND="$AUTOSSH_BIN -M 0 -N -R LT_HOST:80:localhost:3222 serveo.net"
 RETRY_COUNT=0
 MAX_RETRIES=5
 
@@ -25,14 +26,27 @@ $PM2_BIN start /home/ggomes/scuver-rest/print.js --name tastic-print -f >> $LOGF
 $PM2_BIN save >> $LOGFILE 2>&1
 echo "Started pm2 service" >> $LOGFILE
 
+sleep 1
+until $SERVEO_COMMAND >> $LOGFILE 2>&1 || [ $RETRY_COUNT -eq $MAX_RETRIES ]; do
+    if grep -q "Network is unreachable" $LOGFILE; then
+        echo "Retry SERVEO tunnel due to network issue ($RETRY_COUNT/$MAX_RETRIES)" >> $LOGFILE
+        RETRY_COUNT=$((RETRY_COUNT + 1))
+        sleep 10
+    else
+        echo "SERVEO authentication failed" >> $LOGFILE
+    fi
+done
+
+if [ $RETRY_COUNT -eq $MAX_RETRIES ]; then
+    echo "Failed to establish SERVEO tunnel after $MAX_RETRIES attempts." >> $LOGFILE
+fi
+
 # Start localtunnel
-sleep 2
-$LT_BIN --port 3222 --subdomain LT_HOST >> $LOGFILE 2>&1 &
-sleep 2
-$LT_BIN --port 3222 --subdomain LT_HOST >> $LOGFILE 2>&1 &
-sleep 2
-$LT_BIN --port 3222 --subdomain LT_HOST >> $LOGFILE 2>&1 &
+sleep 1
+$LT_BIN --port 3222 --subdomain LT_HOST >> $LOGFILE 2>&1 >> $LOGFILE &
 echo "Started localtunnel" >> $LOGFILE
+
+RETRY_COUNT=0
 
 until $SSH_COMMAND >> $LOGFILE 2>&1 || [ $RETRY_COUNT -eq $MAX_RETRIES ]; do
     if grep -q "Network is unreachable" $LOGFILE; then

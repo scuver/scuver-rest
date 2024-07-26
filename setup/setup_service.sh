@@ -3,7 +3,7 @@ TARGET_SSH_PORT=${1:-2223}
 TARGET_IP=${2:-localhost}
 LT_HOST=${3:-varunca-print}
 PASS=tmp12345
-SLEEP_FOR=1
+SLEEP_FOR=15
 
 sed "s/TARGET_PORT/$TARGET_SSH_PORT/g; s/LT_HOST/$LT_HOST/g; s/SLEEP_FOR/$SLEEP_FOR/g" "start_tastic_example.sh" > "start_tastic_GENERATED.sh"
 
@@ -19,7 +19,7 @@ sed "s/TARGET_PORT/$TARGET_SSH_PORT/g; s/LT_HOST/$LT_HOST/g; s/SLEEP_FOR/$SLEEP_
 /opt/homebrew/bin/sshpass -p $PASS ssh -p $TARGET_SSH_PORT $TARGET_IP 'sudo systemctl enable tastic'
 /opt/homebrew/bin/sshpass -p $PASS ssh -p $TARGET_SSH_PORT $TARGET_IP 'sudo systemctl start tastic'
 /opt/homebrew/bin/sshpass -p $PASS ssh -p $TARGET_SSH_PORT $TARGET_IP 'sudo systemctl status tastic'
-sleep 20
+sleep 30
 #/opt/homebrew/bin/sshpass -p $PASS ssh -p $TARGET_SSH_PORT $TARGET_IP 'sudo journalctl -u tastic.service -b'
 /opt/homebrew/bin/sshpass -p $PASS ssh -p $TARGET_SSH_PORT $TARGET_IP 'tail -n50 /home/ggomes/start_tastic.log'
 #/opt/homebrew/bin/sshpass -p $PASS ssh -p $TARGET_SSH_PORT $TARGET_IP 'tail -n50 /home/ggomes/.pm2/logs/tastic-print-out.log'
