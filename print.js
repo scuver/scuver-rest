@@ -3,6 +3,14 @@ const express = require("express");
 // const fs = require("fs");
 // const path = require("path");
 const cors = require('cors')({origin: '*'});
+const https = require('https');
+var http = require('http');
+const fs = require('fs');
+
+const options = {
+  key: fs.readFileSync(__dirname + '/server.key'), // replace it with your key path
+  cert: fs.readFileSync(__dirname + '/server.crt'), // replace it with your certificate path
+}
 
 // const { ThermalPrinter, PrinterTypes, CharacterSet, BreakLine } = require('node-thermal-printer');
 //
@@ -15,10 +23,9 @@ const cors = require('cors')({origin: '*'});
 
 const { Printer, Image } = require("@node-escpos/core");
 const USB = require("@node-escpos/usb-adapter");
-const device = new USB();
 
 const app = express()
-const port = 3222
+
 app.use(express.json({
   extended: true,
   limit: '50mb'
@@ -47,6 +54,7 @@ app.post('/printEscpos', express.raw({ type: 'application/json', limit: '200mb' 
 })
 
 async function printEscpos(escpos, qrcode) {
+  const device = new USB();
   await device.open(async function(err){
     if(err) {
       throw err;
@@ -71,9 +79,12 @@ async function printEscpos(escpos, qrcode) {
   // });
 }
 
-app.listen(port, () => {
-  console.log(`Print API listening on port ${port}`)
-})
+http.createServer(app).listen(3222);
+https.createServer(options, app).listen(3333);
+
+// app.listen(port, () => {
+//   console.log(`Print API listening on port ${port}`)
+// })
 
 // app.post('/printPdf', express.raw({ type: 'application/pdf', limit: '200mb' }), (req, res) => {
 //   return cors(req, res, () => {
