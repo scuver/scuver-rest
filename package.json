@@ -29,6 +29,7 @@
     "https": "^1.0.0",
     "minimist": "^1.2.8",
     "moment": "^2.29.4",
+    "pdf-to-printer": "^5.6.0",
     "play-sound": "^1.1.5",
     "request-promise-native": "^1.0.9",
     "socket.io-client": "^4.6.1"
