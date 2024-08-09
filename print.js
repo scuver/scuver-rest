@@ -23,6 +23,7 @@ const options = {
 
 const { Printer, Image } = require("@node-escpos/core");
 const USB = require("@node-escpos/usb-adapter");
+const Network = require("@node-escpos/network-adapter");
 
 const app = express()
 
@@ -55,7 +56,7 @@ app.post('/printEscpos', express.raw({ type: 'application/json', limit: '200mb' 
 
 async function printEscpos(escpos, qrcode) {
   // const device = new USB();
-  new escpos.Network('TasticPrinter')
+  new Network('TasticPrinter')
   await device.open(async function(err){
     if(err) {
       throw err;
