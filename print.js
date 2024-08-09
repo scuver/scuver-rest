@@ -36,16 +36,22 @@ app.listen(port, () => {
   console.log(`Print API listening on port ${port}`)
 })
 
-const printPdf = async (printer, pdf) => {
-  const options = {};
-  if (printer) {
-    options.printer = printer;
-  }
-  const tmpFilePath = path.join(`${Math.random().toString(36).substr(7)}.pdf`);
-  fs.writeFileSync(tmpFilePath, pdf, 'binary');
-  await ptp.print(tmpFilePath, options);
-  // await ptp.print('/tmp/pd.pdf', {});
-  fs.unlinkSync(tmpFilePath);  // await ptp.print('/tmp/pd.pdf', {});
+const { exec } = require('child_process');
 
-  return true;
-}
+const printPdf = async (printer, pdf) => {
+  const tmpFilePath = path.join(`/tmp/${Math.random().toString(36).substr(7)}.pdf`);
+  fs.writeFileSync(tmpFilePath, pdf, 'binary');
+
+  exec(`lp -d ${printer} ${tmpFilePath}`, (error, stdout, stderr) => {
+    if (error) {
+      console.error(`Error printing PDF: ${error.message}`);
+      return;
+    }
+    if (stderr) {
+      console.error(`Error output: ${stderr}`);
+      return;
+    }
+    console.log(`PDF sent to printer: ${stdout}`);
+    fs.unlinkSync(tmpFilePath);  // Clean up the temp file
+  });
+};
