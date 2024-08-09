@@ -23,3 +23,6 @@ sshpass -p $PASS ssh -p $TARGET_SSH_PORT $TARGET_IP 'sudo systemctl restart cups
 sshpass -p $PASS ssh -p $TARGET_SSH_PORT $TARGET_IP 'git clone https://github.com/scuver/scuver-rest.git'
 sshpass -p $PASS ssh -p $TARGET_SSH_PORT $TARGET_IP 'cd scuver-rest && npm i'
 sshpass -p $PASS ssh -p $TARGET_SSH_PORT $TARGET_IP  'ssh -o StrictHostKeyChecking=no 168.119.202.164'
+
+# bcdedit /set {bootmgr} path \EFI\ubuntu\grubx64.efi
+# https://docs.google.com/document/d/1cJ_p-uryGB4-Yf9cx4wYO61ZSyw8lCv9FxEvxY-IN3o/edit
