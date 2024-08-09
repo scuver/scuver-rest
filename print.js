@@ -56,7 +56,7 @@ app.post('/printEscpos', express.raw({ type: 'application/json', limit: '200mb' 
 
 async function printEscpos(escpos, qrcode) {
   // const device = new USB();
-  new Network('TasticPrinter')
+  const device = new Network('TasticPrinter')
   await device.open(async function(err){
     if(err) {
       throw err;
