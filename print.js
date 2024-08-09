@@ -56,7 +56,7 @@ app.post('/printEscpos', express.raw({ type: 'application/json', limit: '200mb' 
 
 async function printEscpos(escpos, qrcode) {
   // const device = new USB();
-  const device = new Network('smb://Usuario:m@192.168.68.104/TasticPrinter')
+  const device = new Network('192.168.68.104', 9100);
   await device.open(async function(err){
     if(err) {
       throw err;
