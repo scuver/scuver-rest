@@ -3,6 +3,7 @@ const ptp = require("pdf-to-printer");
 const fs = require("fs");
 const path = require("path");
 const cors = require('cors')({origin: '*'});
+const { exec } = require('child_process');
 
 const app = express()
 const port = 3222
@@ -36,11 +37,16 @@ app.listen(port, () => {
   console.log(`Print API listening on port ${port}`)
 })
 
-const { exec } = require('child_process');
-
 const printPdf = async (printer, pdf) => {
   const tmpFilePath = path.join(`/tmp/${Math.random().toString(36).substr(7)}.pdf`);
-  fs.writeFileSync(tmpFilePath, pdf, 'binary');
+  let base64String = pdf;
+  let binaryString = window.atob(base64String);
+  let len = binaryString.length;
+  let bytes = new Uint8Array(len);
+  for (let i = 0; i < len; i++) {
+    bytes[i] = binaryString.charCodeAt(i);
+  }
+  fs.writeFileSync(tmpFilePath, bytes, 'binary');
 
   exec(`lp -d ${printer} ${tmpFilePath}`, (error, stdout, stderr) => {
     if (error) {
