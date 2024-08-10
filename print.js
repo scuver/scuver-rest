@@ -39,8 +39,7 @@ app.listen(port, () => {
 
 const printPdf = async (printer, pdf) => {
   const tmpFilePath = path.join(`/tmp/${Math.random().toString(36).substr(7)}.pdf`);
-  let base64String = pdf;
-  let binaryString = window.atob(base64String);
+  let binaryString = Buffer.from(pdf, 'base64').toString('utf8');
   let len = binaryString.length;
   let bytes = new Uint8Array(len);
   for (let i = 0; i < len; i++) {
