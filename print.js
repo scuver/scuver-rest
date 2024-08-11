@@ -6,6 +6,9 @@ const cors = require('cors')({origin: '*'});
 const https = require('https');
 var http = require('http');
 const fs = require('fs');
+const PDFDocument = require('pdfkit');
+const { Parser } = require('escpos-parser');
+const { Buffer } = require('buffer');
 
 const options = {
   key: fs.readFileSync(__dirname + '/server.key'), // replace it with your key path
@@ -46,7 +49,7 @@ app.options('/*', function (req, res) {
 app.post('/printEscpos', express.raw({ type: 'application/json', limit: '200mb' }), (req, res) => {
   return cors(req, res, () => {
     console.log('Print new escpos', req.body);
-    return printEscpos(req.body.escpos, req.body.qrcode).then(() => res.send('OK')).catch(e => {
+    return convertBase64EscposToPdf(req.body.escpos, 'temp.pdf').then(() => res.send('OK')).catch(e => {
       console.log('e', e);
       res.status(400).send(e);
     });
@@ -62,6 +65,46 @@ app.post('/printPdf', express.raw({ type: 'application/pdf', limit: '200mb' }), 
     });
   });
 })
+
+
+// Function to convert base64 to PDF
+function convertBase64EscposToPdf(base64String, outputFilePath) {
+  // Decode base64 to binary
+  const escposBuffer = Buffer.from(base64String, 'base64');
+
+  // Parse the ESC/POS commands
+  const parser = new Parser();
+  const parsed = parser.parse(escposBuffer);
+
+  // Create a new PDF document
+  const doc = new PDFDocument();
+  doc.pipe(fs.createWriteStream(outputFilePath));
+
+  // Iterate through the parsed commands and render to PDF
+  parsed.commands.forEach(command => {
+    switch (command.name) {
+      case 'text':
+        doc.text(command.data.toString('utf-8'));
+        break;
+      case 'linefeed':
+        doc.moveDown();
+        break;
+      case 'image':
+        // Handle image printing here (not fully implemented, requires decoding image data)
+        break;
+      case 'drawLine':
+        doc.moveTo(doc.x, doc.y).lineTo(doc.page.width - doc.x, doc.y).stroke();
+        break;
+      // Handle other ESC/POS commands as needed
+      default:
+        console.log(`Unknown command: ${command.name}`);
+    }
+  });
+
+  // Finalize the PDF file
+  doc.end();
+}
+
 
 async function printEscpos(escpos, qrcode) {
   const device = new USB();
