@@ -9,6 +9,8 @@ const fs = require('fs');
 const PDFDocument = require('pdfkit');
 const { Parser } = require('escpos-parser');
 const { Buffer } = require('buffer');
+const escpos = require('escpos');
+escpos.USB = require('escpos-usb');
 
 const options = {
   key: fs.readFileSync(__dirname + '/server.key'), // replace it with your key path
@@ -47,14 +49,49 @@ app.options('/*', function (req, res) {
 });
 
 app.post('/printEscpos', express.raw({ type: 'application/json', limit: '200mb' }), (req, res) => {
-  return cors(req, res, () => {
+  return cors(req, res, async () => {
     console.log('Print new escpos', req.body);
-    return convertBase64EscposToPdf(req.body.escpos, 'temp.pdf').then(() => res.send('OK')).catch(e => {
+    try {
+      await printEscpos(req.body.escpos, req.body.qrcode);
+      res.send('OK');
+    } catch (e) {
       console.log('e', e);
-      res.status(400).send(e);
-    });
+      res.status(400).send(e.message);
+    }
   });
-})
+});
+
+async function printEscpos(escposData, qrcode) {
+  // Initialize USB or Network adapter based on your printer's connection
+  const device = new escpos.USB(); // For USB connection
+  // const device = new escpos.Network('192.168.68.104', 9100); // For Network connection
+
+  await device.open(async function(err) {
+    if (err) {
+      throw new Error(`Failed to open device: ${err.message}`);
+    }
+
+    const printer = new escpos.Printer(device);
+
+    try {
+      const escposBuffer = Buffer.from(escposData, 'base64');
+
+      // Print the raw ESC/POS commands
+      await printer.raw(escposBuffer);
+
+      // Optionally print a QR code
+      if (qrcode) {
+        await printer.qrimage(qrcode, { type: 'png', mode: 'dhdw', size: 8 });
+      }
+
+      // Finalize the print job
+      await printer.cut();
+    } finally {
+      // Close the connection to the printer
+      await printer.close();
+    }
+  });
+}
 
 app.post('/printPdf', express.raw({ type: 'application/pdf', limit: '200mb' }), (req, res) => {
   return cors(req, res, () => {
@@ -67,71 +104,52 @@ app.post('/printPdf', express.raw({ type: 'application/pdf', limit: '200mb' }), 
 })
 
 
-// Function to convert base64 to PDF
-function convertBase64EscposToPdf(base64String, outputFilePath) {
+async function convertBase64EscposToPdf(base64String, outputFilePath) {
   // Decode base64 to binary
   const escposBuffer = Buffer.from(base64String, 'base64');
-
-  // Parse the ESC/POS commands
-  const parser = new Parser();
-  const parsed = parser.parse(escposBuffer);
 
   // Create a new PDF document
   const doc = new PDFDocument();
   doc.pipe(fs.createWriteStream(outputFilePath));
 
-  // Iterate through the parsed commands and render to PDF
-  parsed.commands.forEach(command => {
-    switch (command.name) {
-      case 'text':
-        doc.text(command.data.toString('utf-8'));
-        break;
-      case 'linefeed':
-        doc.moveDown();
-        break;
-      case 'image':
-        // Handle image printing here (not fully implemented, requires decoding image data)
-        break;
-      case 'drawLine':
-        doc.moveTo(doc.x, doc.y).lineTo(doc.page.width - doc.x, doc.y).stroke();
-        break;
-      // Handle other ESC/POS commands as needed
-      default:
-        console.log(`Unknown command: ${command.name}`);
-    }
-  });
+  // Assume this data is plain text and render it directly to the PDF
+  const escposText = escposBuffer.toString('utf-8');
+
+  // Write the text to the PDF
+  doc.text(escposText);
 
   // Finalize the PDF file
   doc.end();
-}
 
 
-async function printEscpos(escpos, qrcode) {
-  const device = new USB();
-  // const device = new Network('192.168.68.104', 9100);
-  await device.open(async function(err){
-    if(err) {
-      throw err;
-    }
-    const result = Buffer.from(escpos, 'base64');
-    const options = { encoding: "GB18030" /* default */ }
-    let printer = new Printer(device, options);
-    if (qrcode) {
-      await printer.qrimage(qrcode);
-    }
-    await printer.raw(result);
-    await printer.close();
-  });
-  // await device.open(async function(err){
-  //   if(err) {
-  //     throw err;
-  //   }
-  //   const options = { encoding: "GB18030" /* default */ }
-  //   let printer = new Printer(device, options);
-  //   await printer.qrcode(qrcode);
-  //   return printer.cut().close();
-  // });
 }
+
+// async function printEscpos(escpos, qrcode) {
+//   const device = new USB();
+//   // const device = new Network('192.168.68.104', 9100);
+//   await device.open(async function(err){
+//     if(err) {
+//       throw err;
+//     }
+//     const result = Buffer.from(escpos, 'base64');
+//     const options = { encoding: "GB18030" /* default */ }
+//     let printer = new Printer(device, options);
+//     if (qrcode) {
+//       await printer.qrimage(qrcode);
+//     }
+//     await printer.raw(result);
+//     await printer.close();
+//   });
+//   // await device.open(async function(err){
+//   //   if(err) {
+//   //     throw err;
+//   //   }
+//   //   const options = { encoding: "GB18030" /* default */ }
+//   //   let printer = new Printer(device, options);
+//   //   await printer.qrcode(qrcode);
+//   //   return printer.cut().close();
+//   // });
+// }
 
 const printPdf = async (printer, pdf) => {
   const tmpFilePath = path.join(`/tmp/${Math.random().toString(36).substr(7)}.pdf`);
