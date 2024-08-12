@@ -9,7 +9,7 @@ const fs = require('fs');
 const PDFDocument = require('pdfkit');
 const { Parser } = require('escpos-parser');
 const { Buffer } = require('buffer');
-const escpos = require("@node-escpos/core");
+const { Printer } = require("@node-escpos/core");
 const USB = require("@node-escpos/usb-adapter");
 
 const options = {
@@ -23,6 +23,10 @@ const options = {
 // escpos.USB = require('escpos-usb');
 // const device  = new escpos.USB();
 //
+
+// const { Printer, Image } = require("@node-escpos/core");
+// const USB = require("@node-escpos/usb-adapter");
+// const Network = require("@node-escpos/network-adapter");
 
 const app = express()
 app.use(express.json({
@@ -42,7 +46,7 @@ app.options('/*', function (req, res) {
   res.end();
 });
 
-app.post('/printEscpos', (req, res) => {
+app.post('/printEscpos', express.raw({ type: 'application/json', limit: '200mb' }), (req, res) => {
   return cors(req, res, async () => {
     console.log('Print new escpos', req.body);
     try {
@@ -58,36 +62,35 @@ app.post('/printEscpos', (req, res) => {
 async function printEscpos(escposData, qrcode) {
   // Initialize USB or Network adapter based on your printer's connection
   const device = new USB(); // For USB connection
-  // const device = new Network('192.168.68.104', 9100); // For Network connection
-  
-  await device.open();  // Open the device connection
-  
-  console.log('device', device);
+  // const device = new escpos.Network('192.168.68.104', 9100); // For Network connection
+
+  await device.open(async function(err) {
+    if (err) {
+      throw new Error(`Failed to open device: ${err.message}`);
+    }
 
   const options = { encoding: "GB18030" /* default */ }
-  const printer = new escpos.Printer(device, options);
+  const printer = new Printer(device, options);
 
-  try {
-    const escposBuffer = Buffer.from(escposData, 'base64');
-    
-    // Print the raw ESC/POS commands
-    await printer.raw(escposBuffer);
+    try {
+      const escposBuffer = Buffer.from(escposData, 'base64');
 
-    // Optionally print a QR code
-    // if (!qrcode) {
-      // await printer.qrcode(qrcode);
-      //await printer.qrimage(qrcode, { type: 'png', mode: 'dhdw', size: 8 });
-    // }
+      // Print the raw ESC/POS commands
+      if (qrcode) {
+        await printer.qrimage(qrcode, { type: 'png', mode: 'dhdw', size: 4, margin: 10 });
+      }
+      await printer.raw(escposBuffer);
 
-    // Finalize the print job
-    await printer.cut();
-  } finally {
-    // Close the connection to the printer
-    await printer.close();
-  }
-  return true;
+      // Optionally print a QR code
+
+      // Finalize the print job
+      // await printer.cut();
+    } finally {
+      // Close the connection to the printer
+      await printer.close();
+    }
+  });
 }
-
 
 app.post('/printPdf', express.raw({ type: 'application/pdf', limit: '200mb' }), (req, res) => {
   return cors(req, res, () => {
@@ -116,6 +119,8 @@ async function convertBase64EscposToPdf(base64String, outputFilePath) {
 
   // Finalize the PDF file
   doc.end();
+
+
 }
 
 // async function printEscpos(escpos, qrcode) {
