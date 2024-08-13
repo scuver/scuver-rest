@@ -1,0 +1,48 @@
+2024-08-12 20:12:34 - Starting C:\Program Files\nodejs\node.exe  --harmony --max_old_space_size=4096 C:\Users\Usuario\dev\scuver-rest\node_modules\node-windows\lib\wrapper.js --file C:\Users\Usuario\dev\scuver-rest\print.js --scriptoptions= --log "Tastic wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2024-08-12 20:12:34 - Started 5124
+2024-08-12 21:04:44 - Stopping tastic.exe
+2024-08-12 21:04:44 - ProcessKill 5124
+2024-08-12 21:04:45 - Shutdown exception
+Message:Está em curso um encerramento de sistema.
+
+Stacktrace:   em System.Runtime.InteropServices.Marshal.ThrowExceptionForHRInternal(Int32 errorCode, IntPtr errorInfo)
+   em System.Management.ManagementScope.InitializeGuts(Object o)
+   em System.Management.ManagementScope.Initialize()
+   em System.Management.ManagementObjectSearcher.Initialize()
+   em System.Management.ManagementObjectSearcher.Get()
+   em winsw.WrapperService.GetChildPids(Int32 pid)
+   em winsw.WrapperService.StopProcessAndChildren(Int32 pid)
+   em winsw.WrapperService.StopIt()
+   em winsw.WrapperService.OnShutdown()
+2024-08-12 21:06:38 - Starting C:\Program Files\nodejs\node.exe  --harmony --max_old_space_size=4096 C:\Users\Usuario\dev\scuver-rest\node_modules\node-windows\lib\wrapper.js --file C:\Users\Usuario\dev\scuver-rest\print.js --scriptoptions= --log "Tastic wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2024-08-12 21:06:42 - Started 7192
+2024-08-13 00:14:07 - Stopping tastic.exe
+2024-08-13 00:14:07 - ProcessKill 7192
+2024-08-13 00:14:09 - Shutdown exception
+Message:Está em curso um encerramento de sistema.
+
+Stacktrace:   em System.Runtime.InteropServices.Marshal.ThrowExceptionForHRInternal(Int32 errorCode, IntPtr errorInfo)
+   em System.Management.ManagementScope.InitializeGuts(Object o)
+   em System.Management.ManagementScope.Initialize()
+   em System.Management.ManagementObjectSearcher.Initialize()
+   em System.Management.ManagementObjectSearcher.Get()
+   em winsw.WrapperService.GetChildPids(Int32 pid)
+   em winsw.WrapperService.StopProcessAndChildren(Int32 pid)
+   em winsw.WrapperService.StopIt()
+   em winsw.WrapperService.OnShutdown()
+2024-08-13 00:15:35 - Starting C:\Program Files\nodejs\node.exe  --harmony --max_old_space_size=4096 C:\Users\Usuario\dev\scuver-rest\node_modules\node-windows\lib\wrapper.js --file C:\Users\Usuario\dev\scuver-rest\print.js --scriptoptions= --log "Tastic wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2024-08-13 00:15:36 - Started 5224
+2024-08-13 11:01:43 - Stopping tastic.exe
+2024-08-13 11:01:43 - ProcessKill 5224
+2024-08-13 11:01:43 - Found child process: 4412 Name: conhost.exe
+2024-08-13 11:01:43 - Found child process: 4264 Name: node.exe
+2024-08-13 11:01:43 - Stopping process 4412
+2024-08-13 11:01:43 - Send SIGINT 4412
+2024-08-13 11:01:43 - SIGINT to 4412 failed - Killing as fallback
+2024-08-13 11:01:43 - Stopping process 4264
+2024-08-13 11:01:43 - Send SIGINT 4264
+2024-08-13 11:01:43 - SIGINT to 4264 failed - Killing as fallback
+2024-08-13 11:01:43 - Stopping process 5224
+2024-08-13 11:01:43 - Send SIGINT 5224
+2024-08-13 11:01:43 - SIGINT to 5224 failed - Killing as fallback
+2024-08-13 11:01:43 - Finished tastic.exe

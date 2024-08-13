@@ -1,0 +1,34 @@
+2024-08-12 20:28:00 - Starting C:\Program Files\nodejs\node.exe  --harmony --max_old_space_size=4096 C:\Users\Usuario\dev\scuver-rest\node_modules\node-windows\lib\wrapper.js --file C:\Users\Usuario\dev\scuver-rest\notify.js --scriptoptions= --log "Tastic Notify wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2024-08-12 20:28:00 - Started 1216
+2024-08-12 21:04:44 - Stopping tasticnotify.exe
+2024-08-12 21:04:44 - ProcessKill 1216
+2024-08-12 21:04:45 - Shutdown exception
+Message:Está em curso um encerramento de sistema.
+
+Stacktrace:   em System.Runtime.InteropServices.Marshal.ThrowExceptionForHRInternal(Int32 errorCode, IntPtr errorInfo)
+   em System.Management.ManagementScope.InitializeGuts(Object o)
+   em System.Management.ManagementScope.Initialize()
+   em System.Management.ManagementObjectSearcher.Initialize()
+   em System.Management.ManagementObjectSearcher.Get()
+   em winsw.WrapperService.GetChildPids(Int32 pid)
+   em winsw.WrapperService.StopProcessAndChildren(Int32 pid)
+   em winsw.WrapperService.StopIt()
+   em winsw.WrapperService.OnShutdown()
+2024-08-12 21:06:38 - Starting C:\Program Files\nodejs\node.exe  --harmony --max_old_space_size=4096 C:\Users\Usuario\dev\scuver-rest\node_modules\node-windows\lib\wrapper.js --file C:\Users\Usuario\dev\scuver-rest\notify.js --scriptoptions= --log "Tastic Notify wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2024-08-12 21:06:42 - Started 6764
+2024-08-13 00:14:07 - Stopping tasticnotify.exe
+2024-08-13 00:14:07 - ProcessKill 6764
+2024-08-13 00:14:09 - Shutdown exception
+Message:Está em curso um encerramento de sistema.
+
+Stacktrace:   em System.Runtime.InteropServices.Marshal.ThrowExceptionForHRInternal(Int32 errorCode, IntPtr errorInfo)
+   em System.Management.ManagementScope.InitializeGuts(Object o)
+   em System.Management.ManagementScope.Initialize()
+   em System.Management.ManagementObjectSearcher.Initialize()
+   em System.Management.ManagementObjectSearcher.Get()
+   em winsw.WrapperService.GetChildPids(Int32 pid)
+   em winsw.WrapperService.StopProcessAndChildren(Int32 pid)
+   em winsw.WrapperService.StopIt()
+   em winsw.WrapperService.OnShutdown()
+2024-08-13 00:15:35 - Starting C:\Program Files\nodejs\node.exe  --harmony --max_old_space_size=4096 C:\Users\Usuario\dev\scuver-rest\node_modules\node-windows\lib\wrapper.js --file C:\Users\Usuario\dev\scuver-rest\notify.js --scriptoptions= --log "Tastic Notify wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2024-08-13 00:15:36 - Started 4064
