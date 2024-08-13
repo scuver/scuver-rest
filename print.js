@@ -13,8 +13,8 @@ const { Printer } = require("@node-escpos/core");
 const USB = require("@node-escpos/usb-adapter");
 
 const options = {
-  key: fs.readFileSync(__dirname + '/server.key'), // replace it with your key path
-  cert: fs.readFileSync(__dirname + '/server.crt'), // replace it with your certificate path
+  key: fs.readFileSync(__dirname + '/setup/wildcard.local.key'), // replace it with your key path
+  cert: fs.readFileSync(__dirname + '/setup/wildcard.local.crt'), // replace it with your certificate path
 }
 
 // const { ThermalPrinter, PrinterTypes, CharacterSet, BreakLine } = require('node-thermal-printer');
