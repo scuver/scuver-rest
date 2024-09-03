@@ -4,7 +4,7 @@ const axios = require('axios');
 const player = require('play-sound')(opts = {})
 
 let SERVER_URL = 'https://scuver.services';
-const SHOP_UID = argv.shop;
+const SHOP_UID = argv.shop || 'rYhGRvkYLA2HHyrhuMMd';
 
 let playSoundInterval = null;
 let audio;
@@ -14,7 +14,7 @@ const startPlaying = () => {
   stopPlaying();
   playSoundInterval = setInterval(() => {
       audio = player.play('bells.wav')
-  }, 2500);
+  }, 10000);
 }
 
 const stopPlaying = () => {

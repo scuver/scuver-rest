@@ -77,7 +77,7 @@ async function printEscpos(escposData, qrcode) {
 
       // Print the raw ESC/POS commands
       if (qrcode) {
-        await printer.qrimage(qrcode, { type: 'png', mode: 'dhdw', size: 4, margin: 10 });
+        await printer.qrimage(qrcode);
       }
       await printer.raw(escposBuffer);
 
