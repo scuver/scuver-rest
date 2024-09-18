@@ -2,6 +2,6 @@ Instalar o Jump Desktop
 Tirar screen lock e sleep
 Instalar o Chrome
 Instalar o GIT
-Clone para a pasta tasti
+Clone para a pasta tasti https://github.com/scuver/scuver-rest.git
 Instalar impressora (o sams coisas funciona por exemplo)
 Usar o zadig para substituir a driver (escolher em Options List All Devices)
