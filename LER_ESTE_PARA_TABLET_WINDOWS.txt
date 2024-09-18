@@ -3,4 +3,5 @@ Tirar screen lock e sleep
 Instalar o Chrome
 Instalar o GIT
 Clone para a pasta tasti
-Instalar impressora (o sams coisas funciona)
+Instalar impressora (o sams coisas funciona por exemplo)
+Usar o zadig para substituir a driver (escolher em Options List All Devices)
