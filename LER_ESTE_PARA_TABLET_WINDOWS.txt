@@ -1,0 +1,6 @@
+Instalar o Jump Desktop
+Tirar screen lock e sleep
+Instalar o Chrome
+Instalar o GIT
+Clone para a pasta tasti
+Instalar impressora (o sams coisas funciona)
